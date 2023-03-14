@@ -28,6 +28,7 @@ namespace ya::enums
 	{
 		None,
 		Transform, // 위치 데이터 수정하는 컴포넌트
+		Gravity, // 낙하를 위한 중력
 		Camera,
 		Mesh,
 		Collider,

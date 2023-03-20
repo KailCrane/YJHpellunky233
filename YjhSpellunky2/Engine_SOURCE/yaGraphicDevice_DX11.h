@@ -38,6 +38,8 @@ namespace ya::graphics
 		void BindRasterizerState(ID3D11RasterizerState* pRasterizerState);
 		void BindDepthStencilState(ID3D11DepthStencilState* pDepthStencilState);
 		void BindBlendState(ID3D11BlendState* pBlendState);
+		void BindBuffer(ID3D11Buffer* buffer, void* data, UINT size);
+
 
 		void Clear();
 		void AdjustViewPorts();

@@ -12,6 +12,8 @@
 #include "yaObject.h"
 #include "yaInput.h"
 #include "yaPlayer.h"
+#include "yaAnimator.h"
+#include "yaAnimation.h"
 
 namespace ya
 {
@@ -40,18 +42,30 @@ namespace ya
 		//Player RECT
 		{
 			Player* obj = object::Instantiate<Player>(eLayerType::Player, this);
-			obj->SetName(L"PLAYER");
+			obj->SetName(L"Player");
 			Transform* player_tr = obj->GetComponent<Transform>();
 
-			player_tr->SetPosition(Vector3(2.0f, 0.18f, 3.0f));
+			player_tr->SetPosition(Vector3(2.0f, -0.55f, 5.0f));
 			//tr->SetRotation(Vector3(0.0f, 0.0f, XM_PIDIV2));
-			player_tr->SetScale(Vector3(0.2f, 0.2f, 1.0f));
+			player_tr->SetScale(Vector3(1.0f, 1.0f, 1.0f));
 			Collider2D* collider = obj->AddComponent<Collider2D>();
 			collider->SetType(eColliderType::Circle);
-			collider->SetSize(Vector2(0.2f, 0.2f));
+			collider->SetSize(Vector2(0.1f, 0.1f));
+
+			Animator* animator = obj->AddComponent<Animator>();
+			std::shared_ptr<Texture> texture = Resources::Load<Texture>(L"Player", L"char_yellow.png");
+
+			animator->Create(L"Idle", texture, Vector2(0.0f, 0.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f);
+			animator->Create(L"Move", texture, Vector2(128.0f, 0.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 8, 0.05f);
+			animator->Create(L"Attack", texture, Vector2(0.0f, 512.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 6, 0.05f);
+			//animator->Create(L"MoveDown", texture, Vector2(0.0f, 520.0f), Vector2(120.0f, 130.0f), Vector2::Zero, 8, 0.1f);
+			//좌측상단좌표,좌측상단으로부터 잘라낼 범위, 발끝, 잘라낸 크기 , 프레임당 지속
+
+
+			animator->Play(L"Idle", true);
 
 			SpriteRenderer* mr = obj->AddComponent<SpriteRenderer>();
-			std::shared_ptr<Material> mateiral = Resources::Find<Material>(L"PlayerMaterial");
+			std::shared_ptr<Material> mateiral = Resources::Find<Material>(L"PlayerMaterial"); 
 			mr->SetMaterial(mateiral);
 			std::shared_ptr<Mesh> mesh = Resources::Find<Mesh>(L"RectMesh");
 			mr->SetMesh(mesh);

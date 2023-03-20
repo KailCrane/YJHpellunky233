@@ -33,6 +33,7 @@ namespace ya::enums
 		Mesh,
 		Collider,
 		//Collider2,
+		Animator,
 		MeshRenerer,
 		SpriteRenderer,
 		UI,
@@ -64,6 +65,15 @@ namespace ya::enums
 		Box,
 		Sphere,
 		End,
+	};
+
+
+	enum class eAnimationType
+	{
+		None,
+		SecondDimension,
+		ThirdDimession,
+		End
 	};
 
 	//struct Ray

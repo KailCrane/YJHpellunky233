@@ -44,6 +44,15 @@ namespace ya::renderer
 		Vector2 resolution;
 	};
 
+	CBUFFER(AnimationCB, CBSLOT_ANIMATION)
+	{
+		Vector2 leftTop;
+		Vector2 size;
+		Vector2 offset;
+		Vector2 atlasSize;
+
+		UINT type;
+	};
 
 	extern Vertex vertexes[4];
 	extern Camera* mainCamera;
@@ -59,9 +68,6 @@ namespace ya::renderer
 	void Initialize();
 	void Render();
 	void Release();
-
 	//Renderer
-
-
 }
 

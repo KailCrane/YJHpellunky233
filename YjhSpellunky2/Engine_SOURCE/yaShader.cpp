@@ -62,11 +62,11 @@ namespace ya
 				, mPSBlob.GetAddressOf()
 				, mErrorBlob.GetAddressOf());
 
-			//if (mErrorBlob)
-			//{
-			//	OutputDebugStringA((char*)mErrorBlob->GetBufferPointer());
-			//	mErrorBlob->Release();
-			//}
+	/*		if (mErrorBlob)
+			{
+				OutputDebugStringA((char*)mErrorBlob->GetBufferPointer());
+				mErrorBlob->Release();
+			}*/
 
 			GetDevice()->CreatePixelShader(mPSBlob->GetBufferPointer()
 				, mPSBlob->GetBufferSize()

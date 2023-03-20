@@ -1,7 +1,7 @@
 #include "yaSpriteRenderer.h"
 #include "yaGameObject.h"
 #include "yaTransform.h"
-
+#include  "yaAnimator.h"
 namespace ya
 {
 	SpriteRenderer::SpriteRenderer()
@@ -27,13 +27,18 @@ namespace ya
 
 	void SpriteRenderer::Render()
 	{
-		GetOwner()->GetComponent<Transform>()->SetConstantBuffer();
+		this->GetOwner()->GetComponent<Transform>()->SetConstantBuffer();
 
 		GetMaterial()->Bind();
 		GetMesh()->BindBuffer();
 
-		GetMesh()->Render();
 
+		Animator* animator = GetOwner()->GetComponent<Animator>();
+		if (animator)
+		{
+			animator->Binds();
+		}
+		GetMesh()->Render();
 		GetMaterial()->Clear();
 	}
 

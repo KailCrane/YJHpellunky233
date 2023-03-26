@@ -20,7 +20,8 @@
 namespace ya
 {
 	TitleScene::TitleScene()
-		: Scene(eSceneType::Tilte)
+		: Scene(eSceneType::Tilte),
+		menuState(TitleScreen)
 	{
 	}
 	TitleScene::~TitleScene()
@@ -28,7 +29,6 @@ namespace ya
 	}
 	void TitleScene::Initalize()
 	{
-
 		// Main Camera Game Object
 		GameObject* cameraObj = object::Instantiate<GameObject>(eLayerType::Camera,this);
 		Camera* cameraComp = cameraObj->AddComponent<Camera>();
@@ -51,6 +51,7 @@ namespace ya
 		bg_tr->SetPosition(Vector3(1.0f, 1.0f, 7.0f));
 		bg_tr->SetScale(Vector3(16.0f, 9.0f, 1.0f));
 
+
 		SpriteRenderer* mr = bgObj->AddComponent<SpriteRenderer>();
 		std::shared_ptr<Material> mateiral = Resources::Find<Material>(L"MenuTitleMaterial");
 		mr->SetMaterial(mateiral);
@@ -70,6 +71,12 @@ namespace ya
 		mr->SetMaterial(mateiral);
 		std::shared_ptr<Mesh> mesh = Resources::Find<Mesh>(L"RectMesh");
 		mr->SetMesh(mesh);
+
+
+		titleObjs.push_back(bgObj);
+		
+		
+		
 		}
 
 		
@@ -126,13 +133,46 @@ namespace ya
 	}
 	void TitleScene::Update()
 	{
-		if (Input::GetKeyDown(eKeyCode::N))
+		/*if (Input::GetKeyDown(eKeyCode::N))
 		{
 			SceneManager::LoadScene(eSceneType::CharacterSelect);
+		}*/
+
+		if (Input::GetKeyDown(eKeyCode::ENTER) || Input::GetKeyDown(eKeyCode::Z))
+		{
+			//페이드 아웃해주고 메인 메뉴 선택을 해주는 UI로
 		}
+
+		if (Input::GetKeyDown(eKeyCode::X))
+		{
+
+		}
+
+		if (Input::GetKeyDown(eKeyCode::UP))
+		{
+
+		}
+		
+		if (Input::GetKeyDown(eKeyCode::DOWN))
+		{
+
+		}
+		
+		if (Input::GetKeyDown(eKeyCode::LEFT))
+		{
+
+		}
+		
+		if (Input::GetKeyDown(eKeyCode::RIGHT))
+		{
+
+		}
+
 
 		Scene::Update();
 	}
+
+
 	void TitleScene::FixedUpdate()
 	{
 		Scene::FixedUpdate();
@@ -143,8 +183,10 @@ namespace ya
 	}
 	void TitleScene::OnEnter()
 	{
+
 	}
 	void TitleScene::OnExit()
 	{
+
 	}
 }

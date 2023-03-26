@@ -216,6 +216,7 @@
     <ClCompile Include="yaAnimation.cpp">
       <Filter>Animation</Filter>
     </ClCompile>
+    <ClCompile Include="yaFadeEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonInclude.h">
@@ -353,6 +354,7 @@
     <ClInclude Include="yaAnimation.h">
       <Filter>Animation</Filter>
     </ClInclude>
+    <ClInclude Include="yaFadeEffect.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="yaMath.inl">

@@ -17,6 +17,18 @@ namespace ya
 		virtual void OnEnter() override;
 		virtual void OnExit() override;
 
+
 	private:
+		std::list<GameObject* > titleObjs;
+		std::list<GameObject* > menuselObjs;
+		std::list<GameObject* > charselObjs;
+
+		enum MenuState
+		{
+			TitleScreen,
+			MenuSelect,
+			CharSelect
+		};
+		MenuState menuState;
 	};
 }

@@ -69,6 +69,8 @@ namespace ya
 		}
 		void Pause() { mState = eState::Paused; }
 		void Death() { mState = eState::Dead; }
+		void Alive() { mState = eState::Active; }
+
 		eState GetState() { return mState; }
 		
 		bool IsDontDestroy() { return mbDontDestroy; }

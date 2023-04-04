@@ -20,7 +20,7 @@ namespace ya
 	PlayScene::PlayScene()
 		: Scene(eSceneType::Play)
 	{
-		
+
 	}
 
 	PlayScene::~PlayScene()
@@ -34,10 +34,10 @@ namespace ya
 		//cameraComp->RegisterCameraInRenderer();
 		cameraComp->TurnLayerMask(eLayerType::UI, false);
 		cameraObj->AddComponent<CameraScript>();
-	
+
 		//타일맵 추가
 		//미리 저장해둔 레벨파일 로드 필요
-		
+
 
 		//Player RECT
 		{
@@ -65,7 +65,7 @@ namespace ya
 			animator->Play(L"Idle", true);
 
 			SpriteRenderer* mr = obj->AddComponent<SpriteRenderer>();
-			std::shared_ptr<Material> mateiral = Resources::Find<Material>(L"PlayerMaterial"); 
+			std::shared_ptr<Material> mateiral = Resources::Find<Material>(L"PlayerMaterial");
 			mr->SetMaterial(mateiral);
 			std::shared_ptr<Mesh> mesh = Resources::Find<Mesh>(L"RectMesh");
 			mr->SetMesh(mesh);
@@ -101,7 +101,7 @@ namespace ya
 		GameObject* entranceObj = object::Instantiate<GameObject>(eLayerType::Bg, this);
 		entranceObj->SetName(L"EntranceBg");
 		Transform* entrance_tr = entranceObj->GetComponent<Transform>();
-		entrance_tr->SetPosition(Vector3(0.0f,-0.31f, 6.0f));
+		entrance_tr->SetPosition(Vector3(0.0f, -0.31f, 6.0f));
 		entrance_tr->SetScale(Vector3(2.0f, 2.0f, 1.0f));
 
 		SpriteRenderer* entrance_mr = entranceObj->AddComponent<SpriteRenderer>();

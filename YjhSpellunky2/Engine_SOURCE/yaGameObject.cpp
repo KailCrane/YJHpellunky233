@@ -92,20 +92,23 @@ namespace ya
 
 	void GameObject::Render()
 	{
-		for (Component* comp : mComponents)
+		if (!IsDead())
 		{
-			if (comp == nullptr)
-				continue;
+			for (Component* comp : mComponents)
+			{
+				if (comp == nullptr)
+					continue;
 
-			comp->Render();
-		}
+				comp->Render();
+			}
 
-		for (Component* script : mScripts)
-		{
-			if (script == nullptr)
-				continue;
+			for (Component* script : mScripts)
+			{
+				if (script == nullptr)
+					continue;
 
-			script->Render();
+				script->Render();
+			}
 		}
 	}
 

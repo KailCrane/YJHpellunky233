@@ -156,7 +156,10 @@
   <ItemGroup>
     <ClInclude Include="yaAnimation.h" />
     <ClInclude Include="yaAnimator.h" />
+    <ClInclude Include="yaArrow.h" />
+    <ClInclude Include="yaBomb.h" />
     <ClInclude Include="yaCharacterSelectScene.h" />
+    <ClInclude Include="yaCharPreview.h" />
     <ClInclude Include="yaCollider3D.h" />
     <ClInclude Include="yaCollider2D.h" />
     <ClInclude Include="yaCollisionManager.h" />
@@ -168,6 +171,7 @@
     <ClInclude Include="yaCollider.h" />
     <ClInclude Include="yaComponent.h" />
     <ClInclude Include="yaConstantBuffer.h" />
+    <ClInclude Include="yaDisk.h" />
     <ClInclude Include="yaEngine.h" />
     <ClInclude Include="yaEntity.h" />
     <ClInclude Include="yaEnums.h" />
@@ -204,7 +208,10 @@
   <ItemGroup>
     <ClCompile Include="yaAnimation.cpp" />
     <ClCompile Include="yaAnimator.cpp" />
+    <ClCompile Include="yaArrow.cpp" />
+    <ClCompile Include="yaBomb.cpp" />
     <ClCompile Include="yaCharacterSelectScene.cpp" />
+    <ClCompile Include="yaCharPreview.cpp" />
     <ClCompile Include="yaCollider3D.cpp" />
     <ClCompile Include="yaCollider2D.cpp" />
     <ClCompile Include="yaCollisionManager.cpp" />
@@ -215,6 +222,7 @@
     <ClCompile Include="yaCollider.cpp" />
     <ClCompile Include="yaComponent.cpp" />
     <ClCompile Include="yaConstantBuffer.cpp" />
+    <ClCompile Include="yaDisk.cpp" />
     <ClCompile Include="yaEntity.cpp" />
     <ClCompile Include="yaFadeEffect.cpp" />
     <ClCompile Include="yaGameObject.cpp" />

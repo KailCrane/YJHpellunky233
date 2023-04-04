@@ -94,6 +94,9 @@
     <Filter Include="Animation">
       <UniqueIdentifier>{a56848a0-7674-497c-935a-7f8f680b5935}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component\Script\Contents\UI">
+      <UniqueIdentifier>{f66758a4-d860-4b24-b95a-3651190f3c89}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="yaApplication.cpp">
@@ -217,6 +220,18 @@
       <Filter>Animation</Filter>
     </ClCompile>
     <ClCompile Include="yaFadeEffect.cpp" />
+    <ClCompile Include="yaDisk.cpp">
+      <Filter>Component\Script\Contents</Filter>
+    </ClCompile>
+    <ClCompile Include="yaBomb.cpp">
+      <Filter>Component\Script\Contents</Filter>
+    </ClCompile>
+    <ClCompile Include="yaArrow.cpp">
+      <Filter>Component\Script\Contents\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="yaCharPreview.cpp">
+      <Filter>Component\Script\Contents\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonInclude.h">
@@ -355,6 +370,18 @@
       <Filter>Animation</Filter>
     </ClInclude>
     <ClInclude Include="yaFadeEffect.h" />
+    <ClInclude Include="yaDisk.h">
+      <Filter>Component\Script\Contents</Filter>
+    </ClInclude>
+    <ClInclude Include="yaBomb.h">
+      <Filter>Component\Script\Contents</Filter>
+    </ClInclude>
+    <ClInclude Include="yaArrow.h">
+      <Filter>Component\Script\Contents\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="yaCharPreview.h">
+      <Filter>Component\Script\Contents\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="yaMath.inl">

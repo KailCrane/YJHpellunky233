@@ -14,8 +14,6 @@ namespace ya
 
 	class FadeEffect
 	{
-	public:
-		
 		enum eFadeType
 		{
 			Fade_In,
@@ -30,11 +28,29 @@ namespace ya
 			End,
 		};
 
+		FadeEffect();
+		virtual ~FadeEffect();
+
+		virtual void Initalize();
+		virtual void Update();
+		virtual void FixedUpdate();
+		virtual void Render();
+
 		void FadeIn();
 		void FadeOut();
+		eFadeState GetFadeState() { return fade_state; }
+		void SetFadeState(eFadeState state) { fade_state = state; }
+
+		bool GetReady() { return IsReady; }
+		void SetReady(bool enable) { IsReady = enable; }
 
 	private:
-
+		bool		IsActive;
+		bool		IsReady;
+		eFadeState	fade_state;
+		float		add_time;
+		float		duration;
+		float		ratio;
+		eFadeType	fade_type;
 	};
-
 }

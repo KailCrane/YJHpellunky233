@@ -2,7 +2,7 @@
 #include "yaResources.h"
 #include "yaMaterial.h"
 #include "yaSceneManager.h"
-
+#include "yaFadeEffect.h"
 namespace ya::renderer
 {
 	Vertex vertexes[4] = {};
@@ -13,6 +13,8 @@ namespace ya::renderer
 	Microsoft::WRL::ComPtr<ID3D11BlendState> blendStates[(UINT)eBSType::End] = {};
 	
 	Camera* mainCamera = nullptr;
+	FadeEffect* fade = nullptr;
+
 	std::vector<Camera*> cameras[(UINT)eSceneType::End];
 	std::vector<DebugMesh> debugMeshes;
 
@@ -387,15 +389,65 @@ namespace ya::renderer
 		Resources::Load<Texture>(L"PlayerSprite", L"Player\\Player.png");
 		Resources::Load<Texture>(L"MenuTitleTexture", L"UI\\BackGround\\MenuTitle.png");
 		Resources::Load<Texture>(L"MenuTitlegalTexture", L"UI\\BackGround\\MenuTitlegal.png");
+
+
 		Resources::Load<Texture>(L"PlayerTexture", L"Player\\Anna_Walk\\AnnaWalk_2.png");
 
 		Resources::Load<Texture>(L"PlayerTexture", L"Player\\Anna_Walk\\AnnaWalk_2.png");
 		Resources::Load<Texture>(L"ChrSelTexture", L"UI\\ChrSel\\Menu_Charsel.png");
 		Resources::Load<Texture>(L"CaveBgTexture", L"UI\\Level1\\Level1Bg.png");
 		Resources::Load<Texture>(L"level1_floorTexture", L"UI\\Level1\\Level1Floor.png");
+
 		Resources::Load<Texture>(L"deco_basecamp_entranceTexture", L"UI\\Level1\\deco_basecamp_01.png");
 		Resources::Load<Texture>(L"deco_basecamp_uroborosTexture", L"UI\\Level1\\deco_basecamp_04.png");
+		
+		Resources::Load<Texture>(L"FadeTexture", L"UI\\FadeScreen.png");
 
+		Resources::Load<Texture>(L"StoneDiskTexture", L"TitleMenu\\StoneDisk.png");
+		Resources::Load<Texture>(L"SplitDisk_L_Texture", L"TitleMenu\\SplitDiskLeft.png");
+		Resources::Load<Texture>(L"SplitDisk_R_Texture", L"TitleMenu\\SplitDiskRight.png");
+		
+		Resources::Load<Texture>(L"StoneHeadTexture", L"TitleMenu\\StoneHead.png");
+		Resources::Load<Texture>(L"SnakeHeadTexture", L"TitleMenu\\SnakeHead.png");
+
+		Resources::Load<Texture>(L"main_fore_2L_Texture", L"TitleMenu\\main_fore_2L.png");
+		Resources::Load<Texture>(L"main_fore_2R_Texture", L"TitleMenu\\main_fore_2R.png");
+		Resources::Load<Texture>(L"main_foreL_Texture", L"TitleMenu\\main_foreL.png");
+		Resources::Load<Texture>(L"main_foreR_Texture", L"TitleMenu\\main_foreR.png");
+		Resources::Load<Texture>(L"main_doorframe_Texture", L"TitleMenu\\main_doorframe.png");
+		Resources::Load<Texture>(L"main_doorback_Texture", L"TitleMenu\\main_doorback.png");
+		Resources::Load<Texture>(L"main_dirt_Texture", L"TitleMenu\\main_dirt.png");
+
+		Resources::Load<Texture>(L"SelectBarL_Texture", L"TitleMenu\\SelectBarL.png");
+		Resources::Load<Texture>(L"SelectBarR_Texture", L"TitleMenu\\SelectBarR.png");
+
+		Resources::Load<Texture>(L"OptionBar_Texture", L"TitleMenu\\OptionBar.png");
+		Resources::Load<Texture>(L"PlayBar_Texture", L"TitleMenu\\PlayBar.png");
+		Resources::Load<Texture>(L"PlayerProfileBar_Texture", L"TitleMenu\\PlayerProfileBar.png");
+		Resources::Load<Texture>(L"RankBar_Texture", L"TitleMenu\\RankBar.png");
+
+		Resources::Load<Texture>(L"RankBar_Texture", L"TitleMenu\\RankBar.png");
+		Resources::Load<Texture>(L"RankBar_Texture", L"TitleMenu\\RankBar.png");
+		Resources::Load<Texture>(L"RankBar_Texture", L"TitleMenu\\RankBar.png");
+
+		Resources::Load<Texture>(L"CharDoor_Texture", L"CharSel\\menu_chardoor_01.png");
+		Resources::Load<Texture>(L"CharDoorBlocked_Texture", L"CharSel\\menu_chardoor_02.png");
+		Resources::Load<Texture>(L"CharDoorFrame_Texture", L"CharSel\\menu_chardoor_03.png");
+		Resources::Load<Texture>(L"CharDoorSpace_Texture", L"CharSel\\menu_chardoor_04.png");
+		Resources::Load<Texture>(L"MenuCharsel_Texture", L"CharSel\\menu_charsel.png");
+
+		Resources::Load<Texture>(L"RopeMidlle_Texture", L"CharSel\\Rope_Middle.png");
+
+		Resources::Load<Texture>(L"Scroll_Texture", L"CharSel\\Scroll.png");
+		Resources::Load<Texture>(L"ScrollMiddle_Texture", L"CharSel\\ScrollMiddle.png");
+
+		Resources::Load<Texture>(L"Char_Select_Upboard_Texture", L"CharSel\\char_select_upboard.png");
+		Resources::Load<Texture>(L"Char_Select_Downboard_Texture", L"CharSel\\char_select_downboard.png");
+
+		Resources::Load<Texture>(L"Z_Button_Texture", L"CharSel\\z_button.png");
+		
+		Resources::Load<Texture>(L"LeftArrow_Texture", L"CharSel\\LeftArrow.png");
+		Resources::Load<Texture>(L"RightArrow_Texture", L"CharSel\\RightArrow.png");
 
 
 	}
@@ -430,6 +482,9 @@ namespace ya::renderer
 		Resources::Insert<Material>(L"PlayerMaterial", Player_Material);
 
 		// UI
+#pragma region UI
+
+
 		std::shared_ptr <Texture> Menu_uiTexture = Resources::Find<Texture>(L"MenuTitleTexture");
 		std::shared_ptr<Shader> Menu_uiShader = Resources::Find<Shader>(L"UIShader");
 		std::shared_ptr<Material> Menu_uiMaterial = std::make_shared<Material>();
@@ -453,6 +508,320 @@ namespace ya::renderer
 		uiMaterial->SetShader(uiShader);
 		uiMaterial->SetTexture(uiTexture);
 		Resources::Insert<Material>(L"UIMaterial", uiMaterial);
+
+		//페이드 화면
+		std::shared_ptr <Texture> fadeTexture = Resources::Find<Texture>(L"FadeTexture");
+		std::shared_ptr<Shader> fadeShader = Resources::Find<Shader>(L"UIShader");
+		std::shared_ptr<Material> fadeMaterial = std::make_shared<Material>();
+		fadeMaterial->SetRenderingMode(eRenderingMode::Transparent);
+		fadeMaterial->SetShader(fadeShader);
+		fadeMaterial->SetTexture(fadeTexture);
+		Resources::Insert<Material>(L"FadeMaterial", fadeMaterial);
+#pragma endregion
+
+		//TitleStone
+#pragma region TitleStone
+
+		std::shared_ptr <Texture> stonediskTexture = Resources::Find<Texture>(L"StoneDiskTexture");
+		std::shared_ptr<Shader> stonediskShader = Resources::Find<Shader>(L"UIShader");
+		std::shared_ptr<Material> stonediskMaterial = std::make_shared<Material>();
+		stonediskMaterial->SetRenderingMode(eRenderingMode::Transparent);
+		stonediskMaterial->SetShader(stonediskShader);
+		stonediskMaterial->SetTexture(stonediskTexture);
+		Resources::Insert<Material>(L"StoneDiskMaterial", stonediskMaterial);
+
+		std::shared_ptr <Texture> stoneheadTexture = Resources::Find<Texture>(L"StoneHeadTexture");
+		std::shared_ptr<Shader> stoneheadShader = Resources::Find<Shader>(L"UIShader");
+		std::shared_ptr<Material> stoneheadMaterial = std::make_shared<Material>();
+		stoneheadMaterial->SetRenderingMode(eRenderingMode::Transparent);
+		stoneheadMaterial->SetShader(stoneheadShader);
+		stoneheadMaterial->SetTexture(stoneheadTexture);
+		Resources::Insert<Material>(L"StoneHeadMaterial", stoneheadMaterial);
+
+		std::shared_ptr <Texture> snakeheadTexture = Resources::Find<Texture>(L"SnakeHeadTexture");
+		std::shared_ptr<Shader> snakeheadShader = Resources::Find<Shader>(L"UIShader");
+		std::shared_ptr<Material> snakeheadMaterial = std::make_shared<Material>();
+		snakeheadMaterial->SetRenderingMode(eRenderingMode::Transparent);
+		snakeheadMaterial->SetShader(snakeheadShader);
+		snakeheadMaterial->SetTexture(snakeheadTexture);
+		Resources::Insert<Material>(L"SnakeHeadMaterial", snakeheadMaterial);
+
+
+		//split_disk
+		std::shared_ptr <Texture> split_disk_L_Texture = Resources::Find<Texture>(L"SplitDisk_L_Texture");
+		std::shared_ptr<Shader> split_disk_L_Shader = Resources::Find<Shader>(L"UIShader");
+		std::shared_ptr<Material> split_disk_L_Material = std::make_shared<Material>();
+		split_disk_L_Material->SetRenderingMode(eRenderingMode::Transparent);
+		split_disk_L_Material->SetShader(split_disk_L_Shader);
+		split_disk_L_Material->SetTexture(split_disk_L_Texture);
+		Resources::Insert<Material>(L"SplitDisk_L_Material", split_disk_L_Material);
+
+		std::shared_ptr <Texture> split_disk_R_Texture = Resources::Find<Texture>(L"SplitDisk_R_Texture");
+		std::shared_ptr<Shader> split_disk_R_Shader = Resources::Find<Shader>(L"UIShader");
+		std::shared_ptr<Material> split_disk_R_Material = std::make_shared<Material>();
+		split_disk_R_Material->SetRenderingMode(eRenderingMode::Transparent);
+		split_disk_R_Material->SetShader(split_disk_R_Shader);
+		split_disk_R_Material->SetTexture(split_disk_R_Texture);
+		Resources::Insert<Material>(L"SplitDisk_R_Material", split_disk_R_Material);
+
+#pragma endregion
+
+#pragma region MenuBg
+		{
+		std::shared_ptr <Texture>main_fore_2L_Texture = Resources::Find<Texture>(L"main_fore_2L_Texture");
+		std::shared_ptr<Shader> main_fore_2L_Shader = Resources::Find<Shader>(L"UIShader");
+		std::shared_ptr<Material> main_fore_2L_Material = std::make_shared<Material>();
+		main_fore_2L_Material->SetRenderingMode(eRenderingMode::Transparent);
+		main_fore_2L_Material->SetShader(main_fore_2L_Shader);
+		main_fore_2L_Material->SetTexture(main_fore_2L_Texture);
+		Resources::Insert<Material>(L"main_fore_2L_Material", main_fore_2L_Material);
+		}
+
+		{
+			std::shared_ptr <Texture>main_fore_2R_Texture = Resources::Find<Texture>(L"main_fore_2R_Texture");
+			std::shared_ptr<Shader> main_fore_2R_Shader = Resources::Find<Shader>(L"UIShader");
+			std::shared_ptr<Material> main_fore_2R_Material = std::make_shared<Material>();
+			main_fore_2R_Material->SetRenderingMode(eRenderingMode::Transparent);
+			main_fore_2R_Material->SetShader(main_fore_2R_Shader);
+			main_fore_2R_Material->SetTexture(main_fore_2R_Texture);
+			Resources::Insert<Material>(L"main_fore_2R_Material", main_fore_2R_Material);
+		}
+
+		{
+			std::shared_ptr <Texture>main_foreL_Texture = Resources::Find<Texture>(L"main_foreL_Texture");
+			std::shared_ptr<Shader> main_foreL_Shader = Resources::Find<Shader>(L"UIShader");
+			std::shared_ptr<Material> main_foreL_Material = std::make_shared<Material>();
+			main_foreL_Material->SetRenderingMode(eRenderingMode::Transparent);
+			main_foreL_Material->SetShader(main_foreL_Shader);
+			main_foreL_Material->SetTexture(main_foreL_Texture);
+			Resources::Insert<Material>(L"main_foreL_Material", main_foreL_Material);
+		}
+		
+		{
+			std::shared_ptr <Texture>main_foreR_Texture = Resources::Find<Texture>(L"main_foreR_Texture");
+			std::shared_ptr<Shader> main_foreR_Shader = Resources::Find<Shader>(L"UIShader");
+			std::shared_ptr<Material> main_foreR_Material = std::make_shared<Material>();
+			main_foreR_Material->SetRenderingMode(eRenderingMode::Transparent);
+			main_foreR_Material->SetShader(main_foreR_Shader);
+			main_foreR_Material->SetTexture(main_foreR_Texture);
+			Resources::Insert<Material>(L"main_foreR_Material", main_foreR_Material);
+		}
+		{
+			std::shared_ptr <Texture>main_doorframe_Texture = Resources::Find<Texture>(L"main_doorframe_Texture");
+			std::shared_ptr<Shader> main_doorframe_Shader = Resources::Find<Shader>(L"UIShader");
+			std::shared_ptr<Material> main_doorframe_Material = std::make_shared<Material>();
+			main_doorframe_Material->SetRenderingMode(eRenderingMode::Transparent);
+			main_doorframe_Material->SetShader(main_doorframe_Shader);
+			main_doorframe_Material->SetTexture(main_doorframe_Texture);
+			Resources::Insert<Material>(L"main_doorframe_Material", main_doorframe_Material);
+		}
+		{
+			std::shared_ptr <Texture>main_doorback_Texture = Resources::Find<Texture>(L"main_doorback_Texture");
+			std::shared_ptr<Shader> main_doorback_Shader = Resources::Find<Shader>(L"UIShader");
+			std::shared_ptr<Material> main_doorback_Material = std::make_shared<Material>();
+			main_doorback_Material->SetRenderingMode(eRenderingMode::Transparent);
+			main_doorback_Material->SetShader(main_doorback_Shader);
+			main_doorback_Material->SetTexture(main_doorback_Texture);
+			Resources::Insert<Material>(L"main_doorback_Material", main_doorback_Material);
+		}
+		{
+			std::shared_ptr <Texture>main_dirt_Texture = Resources::Find<Texture>(L"main_dirt_Texture");
+			std::shared_ptr<Shader> main_dirt_Shader = Resources::Find<Shader>(L"UIShader");
+			std::shared_ptr<Material> main_dirt_Material = std::make_shared<Material>();
+			main_dirt_Material->SetRenderingMode(eRenderingMode::Transparent);
+			main_dirt_Material->SetShader(main_dirt_Shader);
+			main_dirt_Material->SetTexture(main_dirt_Texture);
+			Resources::Insert<Material>(L"main_dirt_Material", main_dirt_Material);
+		}
+		
+		{
+			std::shared_ptr <Texture>selectBarL_Texture = Resources::Find<Texture>(L"SelectBarL_Texture");
+			std::shared_ptr<Shader> selectBarL_Shader = Resources::Find<Shader>(L"UIShader");
+			std::shared_ptr<Material> selectBarL_Material = std::make_shared<Material>();
+			selectBarL_Material->SetRenderingMode(eRenderingMode::Transparent);
+			selectBarL_Material->SetShader(selectBarL_Shader);
+			selectBarL_Material->SetTexture(selectBarL_Texture);
+			Resources::Insert<Material>(L"selectBarL_Material", selectBarL_Material);
+		}
+
+		{
+			std::shared_ptr <Texture>selectBarR_Texture = Resources::Find<Texture>(L"SelectBarR_Texture");
+			std::shared_ptr<Shader> selectBarR_Shader = Resources::Find<Shader>(L"UIShader");
+			std::shared_ptr<Material> selectBarR_Material = std::make_shared<Material>();
+			selectBarR_Material->SetRenderingMode(eRenderingMode::Transparent);
+			selectBarR_Material->SetShader(selectBarR_Shader);
+			selectBarR_Material->SetTexture(selectBarR_Texture);
+			Resources::Insert<Material>(L"SelectBarR_Material", selectBarR_Material);
+		}
+
+		{
+			std::shared_ptr <Texture>optionBar_Texture = Resources::Find<Texture>(L"OptionBar_Texture");
+			std::shared_ptr<Shader> optionBar_Shader = Resources::Find<Shader>(L"UIShader");
+			std::shared_ptr<Material> optionBar_Material = std::make_shared<Material>();
+			optionBar_Material->SetRenderingMode(eRenderingMode::Transparent);
+			optionBar_Material->SetShader(optionBar_Shader);
+			optionBar_Material->SetTexture(optionBar_Texture);
+			Resources::Insert<Material>(L"OptionBar_Material", optionBar_Material);
+		}
+
+		{
+			std::shared_ptr <Texture>playBar_Texture = Resources::Find<Texture>(L"PlayBar_Texture");
+			std::shared_ptr<Shader> playBar_Shader = Resources::Find<Shader>(L"UIShader");
+			std::shared_ptr<Material> playBar_Material = std::make_shared<Material>();
+			playBar_Material->SetRenderingMode(eRenderingMode::Transparent);
+			playBar_Material->SetShader(playBar_Shader);
+			playBar_Material->SetTexture(playBar_Texture);
+			Resources::Insert<Material>(L"PlayBar_Material", playBar_Material);
+		}
+
+		{
+			std::shared_ptr <Texture>playerProfileBar_Texture = Resources::Find<Texture>(L"PlayerProfileBar_Texture");
+			std::shared_ptr<Shader> playerProfileBar_Shader = Resources::Find<Shader>(L"UIShader");
+			std::shared_ptr<Material> playerProfileBar_Material = std::make_shared<Material>();
+			playerProfileBar_Material->SetRenderingMode(eRenderingMode::Transparent);
+			playerProfileBar_Material->SetShader(playerProfileBar_Shader);
+			playerProfileBar_Material->SetTexture(playerProfileBar_Texture);
+			Resources::Insert<Material>(L"PlayerProfileBar_Material", playerProfileBar_Material);
+		}
+
+		{
+			std::shared_ptr <Texture>rankBar_Texture = Resources::Find<Texture>(L"RankBar_Texture");
+			std::shared_ptr<Shader> rankBar_Shader = Resources::Find<Shader>(L"UIShader");
+			std::shared_ptr<Material> rankBar_Material = std::make_shared<Material>();
+			rankBar_Material->SetRenderingMode(eRenderingMode::Transparent);
+			rankBar_Material->SetShader(rankBar_Shader);
+			rankBar_Material->SetTexture(rankBar_Texture);
+			Resources::Insert<Material>(L"RankBar_Material", rankBar_Material);
+		}
+
+		{
+			std::shared_ptr <Texture>charDoor_Texture = Resources::Find<Texture>(L"CharDoor_Texture");
+			std::shared_ptr<Shader> charDoor_Shader = Resources::Find<Shader>(L"UIShader");
+			std::shared_ptr<Material> charDoor_Material = std::make_shared<Material>();
+			charDoor_Material->SetRenderingMode(eRenderingMode::Transparent);
+			charDoor_Material->SetShader(charDoor_Shader);
+			charDoor_Material->SetTexture(charDoor_Texture);
+			Resources::Insert<Material>(L"CharDoor_Material", charDoor_Material);
+		}
+
+		{
+			std::shared_ptr <Texture>charDoorBlocked_Texture = Resources::Find<Texture>(L"CharDoorBlocked_Texture");
+			std::shared_ptr<Shader> charDoorBlocked_Shader = Resources::Find<Shader>(L"UIShader");
+			std::shared_ptr<Material> charDoorBlocked_Material = std::make_shared<Material>();
+			charDoorBlocked_Material->SetRenderingMode(eRenderingMode::Transparent);
+			charDoorBlocked_Material->SetShader(charDoorBlocked_Shader);
+			charDoorBlocked_Material->SetTexture(charDoorBlocked_Texture);
+			Resources::Insert<Material>(L"CharDoorBlocked_Material", charDoorBlocked_Material);
+		}
+
+		{
+			std::shared_ptr <Texture>charDoorFrame_Texture = Resources::Find<Texture>(L"CharDoorFrame_Texture");
+			std::shared_ptr<Shader> charDoorFrame_Shader = Resources::Find<Shader>(L"UIShader");
+			std::shared_ptr<Material> charDoorFrame_Material = std::make_shared<Material>();
+			charDoorFrame_Material->SetRenderingMode(eRenderingMode::Transparent);
+			charDoorFrame_Material->SetShader(charDoorFrame_Shader);
+			charDoorFrame_Material->SetTexture(charDoorFrame_Texture);
+			Resources::Insert<Material>(L"CharDoorFrame_Material", charDoorFrame_Material);
+		}
+		{
+			std::shared_ptr <Texture>charDoorSpace_Texture = Resources::Find<Texture>(L"CharDoorSpace_Texture");
+			std::shared_ptr<Shader> charDoorSpace_Shader = Resources::Find<Shader>(L"UIShader");
+			std::shared_ptr<Material> charDoorSpace_Material = std::make_shared<Material>();
+			charDoorSpace_Material->SetRenderingMode(eRenderingMode::Transparent);
+			charDoorSpace_Material->SetShader(charDoorSpace_Shader);
+			charDoorSpace_Material->SetTexture(charDoorSpace_Texture);
+			Resources::Insert<Material>(L"CharDoorSpace_Material", charDoorSpace_Material);
+		}
+		{
+			std::shared_ptr <Texture>menucharsel_Texture = Resources::Find<Texture>(L"MenuCharsel_Texture");
+			std::shared_ptr<Shader> menucharsel_Shader = Resources::Find<Shader>(L"UIShader");
+			std::shared_ptr<Material> menucharsel_Material = std::make_shared<Material>();
+			menucharsel_Material->SetRenderingMode(eRenderingMode::Transparent);
+			menucharsel_Material->SetShader(menucharsel_Shader);
+			menucharsel_Material->SetTexture(menucharsel_Texture);
+			Resources::Insert<Material>(L"MenuCharsel_Material", menucharsel_Material);
+		}
+		
+		{
+			std::shared_ptr <Texture>ropeMiddle_Texture = Resources::Find<Texture>(L"RopeMidlle_Texture");
+			std::shared_ptr<Shader> ropeMiddle_Shader = Resources::Find<Shader>(L"UIShader");
+			std::shared_ptr<Material>ropeMiddle_Material = std::make_shared<Material>();
+			ropeMiddle_Material->SetRenderingMode(eRenderingMode::Transparent);
+			ropeMiddle_Material->SetShader(ropeMiddle_Shader);
+			ropeMiddle_Material->SetTexture(ropeMiddle_Texture);
+			Resources::Insert<Material>(L"RopeMiddle_Material", ropeMiddle_Material);
+		}
+
+		{
+			std::shared_ptr <Texture>scroll_Texture = Resources::Find<Texture>(L"Scroll_Texture");
+			std::shared_ptr<Shader> scroll_Shader = Resources::Find<Shader>(L"UIShader");
+			std::shared_ptr<Material>scroll_Material = std::make_shared<Material>();
+			scroll_Material->SetRenderingMode(eRenderingMode::Transparent);
+			scroll_Material->SetShader(scroll_Shader);
+			scroll_Material->SetTexture(scroll_Texture);
+			Resources::Insert<Material>(L"Scroll_Material", scroll_Material);
+		} 
+		
+		{
+			std::shared_ptr <Texture>scrollMiddle_Texture = Resources::Find<Texture>(L"ScrollMiddle_Texture");
+			std::shared_ptr<Shader> scrollMiddle_Shader = Resources::Find<Shader>(L"UIShader");
+			std::shared_ptr<Material>scrollMiddle_Material = std::make_shared<Material>();
+			scrollMiddle_Material->SetRenderingMode(eRenderingMode::Transparent);
+			scrollMiddle_Material->SetShader(scrollMiddle_Shader);
+			scrollMiddle_Material->SetTexture(scrollMiddle_Texture);
+			Resources::Insert<Material>(L"ScrollMiddle_Material", scrollMiddle_Material);
+		}
+		{
+			std::shared_ptr <Texture>char_Select_Upboard_Texture = Resources::Find<Texture>(L"Char_Select_Upboard_Texture");
+			std::shared_ptr<Shader> char_Select_Upboard_Shader = Resources::Find<Shader>(L"UIShader");
+			std::shared_ptr<Material>char_Select_Upboard_Material = std::make_shared<Material>();
+			char_Select_Upboard_Material->SetRenderingMode(eRenderingMode::Transparent);
+			char_Select_Upboard_Material->SetShader(char_Select_Upboard_Shader);
+			char_Select_Upboard_Material->SetTexture(char_Select_Upboard_Texture);
+			Resources::Insert<Material>(L"Char_Select_Upboard_Material", char_Select_Upboard_Material);
+		}
+		{
+			std::shared_ptr <Texture>char_Select_Downboard_Texture = Resources::Find<Texture>(L"Char_Select_Downboard_Texture");
+			std::shared_ptr<Shader> char_Select_Downboard_Shader = Resources::Find<Shader>(L"UIShader");
+			std::shared_ptr<Material>char_Select_Downboard_Material = std::make_shared<Material>();
+			char_Select_Downboard_Material->SetRenderingMode(eRenderingMode::Transparent);
+			char_Select_Downboard_Material->SetShader(char_Select_Downboard_Shader);
+			char_Select_Downboard_Material->SetTexture(char_Select_Downboard_Texture);
+			Resources::Insert<Material>(L"Char_Select_Downboard_Material", char_Select_Downboard_Material);
+		}
+
+		{
+			std::shared_ptr <Texture>z_button_Texture = Resources::Find<Texture>(L"Z_Button_Texture");
+			std::shared_ptr<Shader> z_button_Shader = Resources::Find<Shader>(L"UIShader");
+			std::shared_ptr<Material>z_button_Material = std::make_shared<Material>();
+			z_button_Material->SetRenderingMode(eRenderingMode::Transparent);
+			z_button_Material->SetShader(z_button_Shader);
+			z_button_Material->SetTexture(z_button_Texture);
+			Resources::Insert<Material>(L"Z_Button_Material", z_button_Material);
+		}
+
+		{
+			std::shared_ptr <Texture>leftarrow_Texture = Resources::Find<Texture>(L"LeftArrow_Texture");
+			std::shared_ptr<Shader> leftarrow_Shader = Resources::Find<Shader>(L"UIShader");
+			std::shared_ptr<Material>leftarrow_Material = std::make_shared<Material>();
+			leftarrow_Material->SetRenderingMode(eRenderingMode::Transparent);
+			leftarrow_Material->SetShader(leftarrow_Shader);
+			leftarrow_Material->SetTexture(leftarrow_Texture);
+			Resources::Insert<Material>(L"LeftArrow_Material", leftarrow_Material);
+		}
+
+		{
+			std::shared_ptr <Texture>rightarrow_Texture = Resources::Find<Texture>(L"RightArrow_Texture");
+			std::shared_ptr<Shader> rightarrow_Shader = Resources::Find<Shader>(L"UIShader");
+			std::shared_ptr<Material>rightarrow_Material = std::make_shared<Material>();
+			rightarrow_Material->SetRenderingMode(eRenderingMode::Transparent);
+			rightarrow_Material->SetShader(rightarrow_Shader);
+			rightarrow_Material->SetTexture(rightarrow_Texture);
+			Resources::Insert<Material>(L"RightArrow_Material", rightarrow_Material);
+		}
+
+#pragma endregion
+
 
 
 		//Bg
@@ -499,7 +868,7 @@ namespace ya::renderer
 		Resources::Insert<Material>(L"GridMaterial", gridMaterial);
 
 		// Debug
-		std::shared_ptr<Shader> debugShader = Resources::Find<Shader>(L"DebugShader");
+		std::shared_ptr<Shader> debugShader = Resources::Find<Shader>(L"DebugShaderDebugShader");
 		std::shared_ptr<Material> debugMaterial = std::make_shared<Material>();
 		debugMaterial->SetRenderingMode(eRenderingMode::Transparent);
 		debugMaterial->SetShader(debugShader);

@@ -44,7 +44,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
-    <EnableUnitySupport>false</EnableUnitySupport>
+    <EnableUnitySupport>true</EnableUnitySupport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
@@ -157,10 +157,11 @@
     <ClInclude Include="yaAnimation.h" />
     <ClInclude Include="yaAnimator.h" />
     <ClInclude Include="yaArrow.h" />
-    <ClInclude Include="yaBoardNScroll.h" />
     <ClInclude Include="yaBomb.h" />
+    <ClInclude Include="yaBullet.h" />
+    <ClInclude Include="yaBulletScript.h" />
+    <ClInclude Include="yaCaveman.h" />
     <ClInclude Include="yaCharacterSelectScene.h" />
-    <ClInclude Include="yaCharPreview.h" />
     <ClInclude Include="yaCharSelectUI.h" />
     <ClInclude Include="yaCollider3D.h" />
     <ClInclude Include="yaCollider2D.h" />
@@ -171,15 +172,18 @@
     <ClInclude Include="yaCamera.h" />
     <ClInclude Include="yaCameraScript.h" />
     <ClInclude Include="yaCollider.h" />
+    <ClInclude Include="yaColTransfer.h" />
+    <ClInclude Include="yaColTransferScript.h" />
     <ClInclude Include="yaComponent.h" />
     <ClInclude Include="yaConstantBuffer.h" />
+    <ClInclude Include="yaEarnItemUI.h" />
     <ClInclude Include="yaEngine.h" />
     <ClInclude Include="yaEntity.h" />
     <ClInclude Include="yaEnums.h" />
-    <ClInclude Include="yaFadeEffect.h" />
     <ClInclude Include="yaGameObject.h" />
     <ClInclude Include="yaGraphicDevice_DX11.h" />
     <ClInclude Include="yaGraphics.h" />
+    <ClInclude Include="yaGravity.h" />
     <ClInclude Include="yaGridScript.h" />
     <ClInclude Include="yaInput.h" />
     <ClInclude Include="yaLayer.h" />
@@ -196,11 +200,16 @@
     <ClInclude Include="yaRenderer.h" />
     <ClInclude Include="yaResource.h" />
     <ClInclude Include="yaResources.h" />
-    <ClInclude Include="yaRigidbody.h" />
+    <ClInclude Include="yaRope.h" />
+    <ClInclude Include="yaRopeScript.h" />
+    <ClInclude Include="yaRopeThrow.h" />
+    <ClInclude Include="yaRopeThrowScript.h" />
     <ClInclude Include="yaScene.h" />
     <ClInclude Include="yaSceneManager.h" />
     <ClInclude Include="yaScript.h" />
     <ClInclude Include="yaShader.h" />
+    <ClInclude Include="yaShotgun.h" />
+    <ClInclude Include="yaShotGunScript.h" />
     <ClInclude Include="yaSpriteRenderer.h" />
     <ClInclude Include="yaTexture.h" />
     <ClInclude Include="yaTime.h" />
@@ -210,15 +219,18 @@
     <ClInclude Include="yaUIDisk.h" />
     <ClInclude Include="yaUISpear.h" />
     <ClInclude Include="yaUIStatue.h" />
+    <ClInclude Include="yaWhip.h" />
+    <ClInclude Include="yaWhipScript.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="yaAnimation.cpp" />
     <ClCompile Include="yaAnimator.cpp" />
     <ClCompile Include="yaArrow.cpp" />
-    <ClCompile Include="yaBoardNScroll.cpp" />
     <ClCompile Include="yaBomb.cpp" />
+    <ClCompile Include="yaBullet.cpp" />
+    <ClCompile Include="yaBulletScript.cpp" />
+    <ClCompile Include="yaCaveman.cpp" />
     <ClCompile Include="yaCharacterSelectScene.cpp" />
-    <ClCompile Include="yaCharPreview.cpp" />
     <ClCompile Include="yaCharSelectUI.cpp" />
     <ClCompile Include="yaCollider3D.cpp" />
     <ClCompile Include="yaCollider2D.cpp" />
@@ -228,12 +240,15 @@
     <ClCompile Include="yaCamera.cpp" />
     <ClCompile Include="yaCameraScript.cpp" />
     <ClCompile Include="yaCollider.cpp" />
+    <ClCompile Include="yaColTransfer.cpp" />
+    <ClCompile Include="yaColTransferScript.cpp" />
     <ClCompile Include="yaComponent.cpp" />
     <ClCompile Include="yaConstantBuffer.cpp" />
+    <ClCompile Include="yaEarnItemUI.cpp" />
     <ClCompile Include="yaEntity.cpp" />
-    <ClCompile Include="yaFadeEffect.cpp" />
     <ClCompile Include="yaGameObject.cpp" />
     <ClCompile Include="yaGraphicDevice_DX11.cpp" />
+    <ClCompile Include="yaGravity.cpp" />
     <ClCompile Include="yaGridScript.cpp" />
     <ClCompile Include="yaInput.cpp" />
     <ClCompile Include="yaLayer.cpp" />
@@ -249,11 +264,16 @@
     <ClCompile Include="yaRenderer.cpp" />
     <ClCompile Include="yaResource.cpp" />
     <ClCompile Include="yaResources.cpp" />
-    <ClCompile Include="yaRigidbody.cpp" />
+    <ClCompile Include="yaRope.cpp" />
+    <ClCompile Include="yaRopeScript.cpp" />
+    <ClCompile Include="yaRopeThrow.cpp" />
+    <ClCompile Include="yaRopeThrowScript.cpp" />
     <ClCompile Include="yaScene.cpp" />
     <ClCompile Include="yaSceneManager.cpp" />
     <ClCompile Include="yaScript.cpp" />
     <ClCompile Include="yaShader.cpp" />
+    <ClCompile Include="yaShotgun.cpp" />
+    <ClCompile Include="yaShotGunScript.cpp" />
     <ClCompile Include="yaSpriteRenderer.cpp" />
     <ClCompile Include="yaTexture.cpp" />
     <ClCompile Include="yaTime.cpp" />
@@ -263,6 +283,8 @@
     <ClCompile Include="yaUIDisk.cpp" />
     <ClCompile Include="yaUISpear.cpp" />
     <ClCompile Include="yaUIStatue.cpp" />
+    <ClCompile Include="yaWhip.cpp" />
+    <ClCompile Include="yaWhipScript.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="yaMath.inl" />

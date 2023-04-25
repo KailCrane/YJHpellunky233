@@ -26,7 +26,7 @@ namespace ya
 			evt.second = nullptr;
 		}
 	}
-	void Animator::Initalize()
+	void Animator::Initialize()
 	{
 	}
 	void Animator::Update()
@@ -62,7 +62,7 @@ namespace ya
 
 	bool Animator::Create(const std::wstring& name, std::shared_ptr<Texture> atlas
 		, Vector2 leftTop, Vector2 size, Vector2 offset
-		, UINT spriteLegth, float duration)
+		, UINT spriteLegth, float duration, bool reverse)
 	{
 		if (atlas == nullptr)
 			return false;
@@ -74,7 +74,7 @@ namespace ya
 		animation = new Animation();
 		animation->Create(name, atlas, leftTop
 			, size, offset
-			, spriteLegth, duration);
+			, spriteLegth, duration, reverse);
 
 		mAnimations.insert(std::make_pair(name, animation));
 

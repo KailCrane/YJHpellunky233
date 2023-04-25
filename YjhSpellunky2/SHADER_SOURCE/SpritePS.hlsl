@@ -34,14 +34,14 @@ float4 main(VSOut In) : SV_Target
             discard;
         }
         
-        color = atlasTexutre.Sample(anisotropicSampler, UV);
+            color = atlasTexutre.Sample(anisotropicSampler, UV);
     }
     else
     {
         color = defaultTexture.Sample(anisotropicSampler, In.UV);
     }
     
-    return color;
+        return color;
     
     //color.a += time;
 }

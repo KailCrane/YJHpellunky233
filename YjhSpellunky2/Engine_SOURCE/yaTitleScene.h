@@ -43,15 +43,14 @@ namespace ya
 		//void MenuSelectAnimSkip();
 
 	private:
-		
-		GameObject* bgObj;
-		GameObject* bggalObj;
+
 		// 돌아가는 원판
 		std::vector<GameObject*> menu_select_objs;
-		
+		std::vector<GameObject*>intro_bg_objs;
+
 		UIDisk* uiDisk;
-	    UIStatue* uiStatue;
-		
+		UIStatue* uiStatue;
+
 		TitleMenuSelect* menuSelect;
 		CharSelectUI* charSelect;
 
@@ -92,21 +91,21 @@ namespace ya
 
 		GameObject* upboard;
 		GameObject* downboard;
-		
+
 		float board_move_dist;
 		float board_move_speed;
-		
+
 		Vector3 init_Board_pos;
 
 
 		GameObject* scroll_L;
 		GameObject* scroll_R;
-		
+
 		GameObject* scrollMiddle;
 
 		float scroll_move_dist;
 		float scroll_move_speed;
-		
+
 		Vector3 init_Scroll_pos;
 
 

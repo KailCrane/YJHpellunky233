@@ -102,7 +102,6 @@ namespace ya::graphics
 		Transform,
 		Material,
 		Grid,
-		Fade,
 		Animation,
 		End,
 	};

@@ -40,7 +40,7 @@ namespace ya
 			if (comp == nullptr)
 				continue;
 
-			comp->Initalize();
+			comp->Initialize();
 		}
 
 		for (Component* script : mScripts)
@@ -48,7 +48,7 @@ namespace ya
 			if (script == nullptr)
 				continue;
 
-			script->Initalize();
+			script->Initialize();
 		}
 	}
 
@@ -92,23 +92,20 @@ namespace ya
 
 	void GameObject::Render()
 	{
-		if (!IsDead())
+		for (Component* comp : mComponents)
 		{
-			for (Component* comp : mComponents)
-			{
-				if (comp == nullptr)
-					continue;
+			if (comp == nullptr)
+				continue;
 
-				comp->Render();
-			}
+			comp->Render();
+		}
 
-			for (Component* script : mScripts)
-			{
-				if (script == nullptr)
-					continue;
+		for (Component* script : mScripts)
+		{
+			if (script == nullptr)
+				continue;
 
-				script->Render();
-			}
+			script->Render();
 		}
 	}
 

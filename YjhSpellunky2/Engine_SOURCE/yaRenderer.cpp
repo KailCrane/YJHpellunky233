@@ -2,7 +2,7 @@
 #include "yaResources.h"
 #include "yaMaterial.h"
 #include "yaSceneManager.h"
-#include "yaFadeEffect.h"
+
 namespace ya::renderer
 {
 	Vertex vertexes[4] = {};
@@ -13,8 +13,6 @@ namespace ya::renderer
 	Microsoft::WRL::ComPtr<ID3D11BlendState> blendStates[(UINT)eBSType::End] = {};
 	
 	Camera* mainCamera = nullptr;
-	FadeEffect* fade = nullptr;
-
 	std::vector<Camera*> cameras[(UINT)eSceneType::End];
 	std::vector<DebugMesh> debugMeshes;
 
@@ -153,6 +151,12 @@ namespace ya::renderer
 			, shader->GetVSBlobBufferSize()
 			, shader->GetInputLayoutAddressOf());
 
+		std::shared_ptr<Shader> debugShader = Resources::Find<Shader>(L"DebugShader");
+		GetDevice()->CreateInputLayout(arrLayoutDesc, 3
+			, debugShader->GetVSBlobBufferPointer()
+			, debugShader->GetVSBlobBufferSize()
+			, debugShader->GetInputLayoutAddressOf());
+
 		std::shared_ptr<Shader> spriteShader = Resources::Find<Shader>(L"SpriteShader");
 		GetDevice()->CreateInputLayout(arrLayoutDesc, 3
 			, spriteShader->GetVSBlobBufferPointer()
@@ -171,11 +175,6 @@ namespace ya::renderer
 			, gridShader->GetVSBlobBufferSize()
 			, gridShader->GetInputLayoutAddressOf());
 
-		std::shared_ptr<Shader> debugShader = Resources::Find<Shader>(L"DebugShader");
-		GetDevice()->CreateInputLayout(arrLayoutDesc, 3
-			, debugShader->GetVSBlobBufferPointer()
-			, debugShader->GetVSBlobBufferSize()
-			, debugShader->GetInputLayoutAddressOf());
 
 #pragma endregion
 #pragma region sampler state
@@ -389,23 +388,19 @@ namespace ya::renderer
 		Resources::Load<Texture>(L"PlayerSprite", L"Player\\Player.png");
 		Resources::Load<Texture>(L"MenuTitleTexture", L"UI\\BackGround\\MenuTitle.png");
 		Resources::Load<Texture>(L"MenuTitlegalTexture", L"UI\\BackGround\\MenuTitlegal.png");
-
-
+		Resources::Load<Texture>(L"PlayerTexture", L"Player\\Anna_Walk\\AnnaWalk_2.png");
 
 		Resources::Load<Texture>(L"PlayerTexture", L"Player\\Anna_Walk\\AnnaWalk_2.png");
 		Resources::Load<Texture>(L"ChrSelTexture", L"UI\\ChrSel\\Menu_Charsel.png");
 		Resources::Load<Texture>(L"CaveBgTexture", L"UI\\Level1\\Level1Bg.png");
 		Resources::Load<Texture>(L"level1_floorTexture", L"UI\\Level1\\Level1Floor.png");
-
 		Resources::Load<Texture>(L"deco_basecamp_entranceTexture", L"UI\\Level1\\deco_basecamp_01.png");
 		Resources::Load<Texture>(L"deco_basecamp_uroborosTexture", L"UI\\Level1\\deco_basecamp_04.png");
-		
-		Resources::Load<Texture>(L"FadeTexture", L"UI\\FadeScreen.png");
 
 		Resources::Load<Texture>(L"StoneDiskTexture", L"TitleMenu\\StoneDisk.png");
 		Resources::Load<Texture>(L"SplitDisk_L_Texture", L"TitleMenu\\SplitDiskLeft.png");
 		Resources::Load<Texture>(L"SplitDisk_R_Texture", L"TitleMenu\\SplitDiskRight.png");
-		
+
 		Resources::Load<Texture>(L"StoneHeadTexture", L"TitleMenu\\StoneHead.png");
 		Resources::Load<Texture>(L"SnakeHeadTexture", L"TitleMenu\\SnakeHead.png");
 
@@ -444,10 +439,9 @@ namespace ya::renderer
 		Resources::Load<Texture>(L"Char_Select_Downboard_Texture", L"CharSel\\char_select_downboard.png");
 
 		Resources::Load<Texture>(L"Z_Button_Texture", L"CharSel\\z_button.png");
-		
+
 		Resources::Load<Texture>(L"LeftArrow_Texture", L"CharSel\\LeftArrow.png");
 		Resources::Load<Texture>(L"RightArrow_Texture", L"CharSel\\RightArrow.png");
-
 
 	}
 
@@ -457,13 +451,13 @@ namespace ya::renderer
 		// Default
 		std::shared_ptr <Texture> texture = Resources::Find<Texture>(L"SmileTexture");
 		std::shared_ptr<Shader> shader = Resources::Find<Shader>(L"RectShader");
-		std::shared_ptr<Material> material = std::make_shared<Material>(); 
+		std::shared_ptr<Material> material = std::make_shared<Material>();
 		material->SetShader(shader);
 		material->SetTexture(texture);
 		Resources::Insert<Material>(L"RectMaterial", material);
 
 		// Sprite
-		std::shared_ptr <Texture> spriteTexture= Resources::Find<Texture>(L"DefaultSprite");
+		std::shared_ptr <Texture> spriteTexture = Resources::Find<Texture>(L"DefaultSprite");
 		std::shared_ptr<Shader> spriteShader = Resources::Find<Shader>(L"SpriteShader");
 		std::shared_ptr<Material> spriteMaterial = std::make_shared<Material>();
 		spriteMaterial->SetRenderingMode(eRenderingMode::Transparent);
@@ -481,9 +475,6 @@ namespace ya::renderer
 		Resources::Insert<Material>(L"PlayerMaterial", Player_Material);
 
 		// UI
-#pragma region UI
-
-
 		std::shared_ptr <Texture> Menu_uiTexture = Resources::Find<Texture>(L"MenuTitleTexture");
 		std::shared_ptr<Shader> Menu_uiShader = Resources::Find<Shader>(L"UIShader");
 		std::shared_ptr<Material> Menu_uiMaterial = std::make_shared<Material>();
@@ -508,18 +499,8 @@ namespace ya::renderer
 		uiMaterial->SetTexture(uiTexture);
 		Resources::Insert<Material>(L"UIMaterial", uiMaterial);
 
-		//페이드 화면
-		std::shared_ptr <Texture> fadeTexture = Resources::Find<Texture>(L"FadeTexture");
-		std::shared_ptr<Shader> fadeShader = Resources::Find<Shader>(L"UIShader");
-		std::shared_ptr<Material> fadeMaterial = std::make_shared<Material>();
-		fadeMaterial->SetRenderingMode(eRenderingMode::Transparent);
-		fadeMaterial->SetShader(fadeShader);
-		fadeMaterial->SetTexture(fadeTexture);
-		Resources::Insert<Material>(L"FadeMaterial", fadeMaterial);
-#pragma endregion
-
-		//TitleStone
 #pragma region TitleStone
+
 
 		std::shared_ptr <Texture> stonediskTexture = Resources::Find<Texture>(L"StoneDiskTexture");
 		std::shared_ptr<Shader> stonediskShader = Resources::Find<Shader>(L"UIShader");
@@ -567,13 +548,13 @@ namespace ya::renderer
 
 #pragma region MenuBg
 		{
-		std::shared_ptr <Texture>main_fore_2L_Texture = Resources::Find<Texture>(L"main_fore_2L_Texture");
-		std::shared_ptr<Shader> main_fore_2L_Shader = Resources::Find<Shader>(L"UIShader");
-		std::shared_ptr<Material> main_fore_2L_Material = std::make_shared<Material>();
-		main_fore_2L_Material->SetRenderingMode(eRenderingMode::Transparent);
-		main_fore_2L_Material->SetShader(main_fore_2L_Shader);
-		main_fore_2L_Material->SetTexture(main_fore_2L_Texture);
-		Resources::Insert<Material>(L"main_fore_2L_Material", main_fore_2L_Material);
+			std::shared_ptr <Texture>main_fore_2L_Texture = Resources::Find<Texture>(L"main_fore_2L_Texture");
+			std::shared_ptr<Shader> main_fore_2L_Shader = Resources::Find<Shader>(L"UIShader");
+			std::shared_ptr<Material> main_fore_2L_Material = std::make_shared<Material>();
+			main_fore_2L_Material->SetRenderingMode(eRenderingMode::Transparent);
+			main_fore_2L_Material->SetShader(main_fore_2L_Shader);
+			main_fore_2L_Material->SetTexture(main_fore_2L_Texture);
+			Resources::Insert<Material>(L"main_fore_2L_Material", main_fore_2L_Material);
 		}
 
 		{
@@ -595,7 +576,7 @@ namespace ya::renderer
 			main_foreL_Material->SetTexture(main_foreL_Texture);
 			Resources::Insert<Material>(L"main_foreL_Material", main_foreL_Material);
 		}
-		
+
 		{
 			std::shared_ptr <Texture>main_foreR_Texture = Resources::Find<Texture>(L"main_foreR_Texture");
 			std::shared_ptr<Shader> main_foreR_Shader = Resources::Find<Shader>(L"UIShader");
@@ -632,7 +613,7 @@ namespace ya::renderer
 			main_dirt_Material->SetTexture(main_dirt_Texture);
 			Resources::Insert<Material>(L"main_dirt_Material", main_dirt_Material);
 		}
-		
+
 		{
 			std::shared_ptr <Texture>selectBarL_Texture = Resources::Find<Texture>(L"SelectBarL_Texture");
 			std::shared_ptr<Shader> selectBarL_Shader = Resources::Find<Shader>(L"UIShader");
@@ -740,7 +721,7 @@ namespace ya::renderer
 			menucharsel_Material->SetTexture(menucharsel_Texture);
 			Resources::Insert<Material>(L"MenuCharsel_Material", menucharsel_Material);
 		}
-		
+
 		{
 			std::shared_ptr <Texture>ropeMiddle_Texture = Resources::Find<Texture>(L"RopeMidlle_Texture");
 			std::shared_ptr<Shader> ropeMiddle_Shader = Resources::Find<Shader>(L"UIShader");
@@ -759,8 +740,8 @@ namespace ya::renderer
 			scroll_Material->SetShader(scroll_Shader);
 			scroll_Material->SetTexture(scroll_Texture);
 			Resources::Insert<Material>(L"Scroll_Material", scroll_Material);
-		} 
-		
+		}
+
 		{
 			std::shared_ptr <Texture>scrollMiddle_Texture = Resources::Find<Texture>(L"ScrollMiddle_Texture");
 			std::shared_ptr<Shader> scrollMiddle_Shader = Resources::Find<Shader>(L"UIShader");
@@ -817,68 +798,66 @@ namespace ya::renderer
 			rightarrow_Material->SetShader(rightarrow_Shader);
 			rightarrow_Material->SetTexture(rightarrow_Texture);
 			Resources::Insert<Material>(L"RightArrow_Material", rightarrow_Material);
+
+
+			//Bg
+			std::shared_ptr <Texture> chrseltexture = Resources::Find<Texture>(L"ChrSelTexture");
+			std::shared_ptr<Shader> chrselshader = Resources::Find<Shader>(L"RectShader");
+			std::shared_ptr<Material> chrselmaterial = std::make_shared<Material>();
+			chrselmaterial->SetShader(chrselshader);
+			chrselmaterial->SetTexture(chrseltexture);
+			Resources::Insert<Material>(L"ChrSelMaterial", chrselmaterial);
+
+			std::shared_ptr <Texture> cavebgtexture = Resources::Find<Texture>(L"CaveBgTexture");
+			std::shared_ptr<Shader> cavebgshader = Resources::Find<Shader>(L"RectShader");
+			std::shared_ptr<Material> cavebgmaterial = std::make_shared<Material>();
+			cavebgmaterial->SetShader(cavebgshader);
+			cavebgmaterial->SetTexture(cavebgtexture);
+			Resources::Insert<Material>(L"CaveBgMaterial", cavebgmaterial);
+
+			std::shared_ptr <Texture> level1_floortexture = Resources::Find<Texture>(L"level1_floorTexture");
+			std::shared_ptr<Shader> level1_floorshader = Resources::Find<Shader>(L"RectShader");
+			std::shared_ptr<Material> level1_floormaterial = std::make_shared<Material>();
+			level1_floormaterial->SetShader(level1_floorshader);
+			level1_floormaterial->SetTexture(level1_floortexture);
+			Resources::Insert<Material>(L"level1_floorMaterial", level1_floormaterial);
+
+			std::shared_ptr <Texture> deco_basecamp_entrance_texture = Resources::Find<Texture>(L"deco_basecamp_entranceTexture");
+			std::shared_ptr<Shader> deco_basecamp_entrance_shader = Resources::Find<Shader>(L"RectShader");
+			std::shared_ptr<Material> deco_basecamp_entrance_material = std::make_shared<Material>();
+			deco_basecamp_entrance_material->SetShader(deco_basecamp_entrance_shader);
+			deco_basecamp_entrance_material->SetTexture(deco_basecamp_entrance_texture);
+			Resources::Insert<Material>(L"deco_basecamp_entranceMaterial", deco_basecamp_entrance_material);
+
+			std::shared_ptr <Texture> deco_basecamp_uroboros_texture = Resources::Find<Texture>(L"deco_basecamp_uroborosTexture");
+			std::shared_ptr<Shader> deco_basecamp_uroboros_shader = Resources::Find<Shader>(L"RectShader");
+			std::shared_ptr<Material> deco_basecamp_uroboros_material = std::make_shared<Material>();
+			deco_basecamp_uroboros_material->SetShader(deco_basecamp_uroboros_shader);
+			deco_basecamp_uroboros_material->SetTexture(deco_basecamp_uroboros_texture);
+			Resources::Insert<Material>(L"deco_basecamp_uroborosMaterial", deco_basecamp_uroboros_material);
+
+
+
+
+			// Grid
+			std::shared_ptr<Shader> gridShader = Resources::Find<Shader>(L"GridShader");
+			std::shared_ptr<Material> gridMaterial = std::make_shared<Material>();
+			gridMaterial->SetShader(gridShader);
+			Resources::Insert<Material>(L"GridMaterial", gridMaterial);
+
+			// Debug
+			std::shared_ptr<Shader> debugShader = Resources::Find<Shader>(L"DebugShader");
+			std::shared_ptr<Material> debugMaterial = std::make_shared<Material>();
+			debugMaterial->SetRenderingMode(eRenderingMode::Transparent);
+			debugMaterial->SetShader(debugShader);
+			Resources::Insert<Material>(L"DebugMaterial", debugMaterial);
+
+			// Player
+			/*std::shared_ptr<Texture> playerTexture = Resources::Find<Texture>(L"PlayerSprite");
+			std::shared_ptr<Shader> playerShader = Resources::Find<Shader>(L"PlayerShader");*/
+
 		}
-
-#pragma endregion
-
-
-
-		//Bg
-		std::shared_ptr <Texture> chrseltexture = Resources::Find<Texture>(L"ChrSelTexture");
-		std::shared_ptr<Shader> chrselshader = Resources::Find<Shader>(L"RectShader");
-		std::shared_ptr<Material> chrselmaterial = std::make_shared<Material>();
-		chrselmaterial->SetShader(chrselshader);
-		chrselmaterial->SetTexture(chrseltexture);
-		Resources::Insert<Material>(L"ChrSelMaterial", chrselmaterial);
-
-		std::shared_ptr <Texture> cavebgtexture = Resources::Find<Texture>(L"CaveBgTexture");
-		std::shared_ptr<Shader> cavebgshader = Resources::Find<Shader>(L"RectShader");
-		std::shared_ptr<Material> cavebgmaterial = std::make_shared<Material>();
-		cavebgmaterial->SetShader(cavebgshader);
-		cavebgmaterial->SetTexture(cavebgtexture);
-		Resources::Insert<Material>(L"CaveBgMaterial", cavebgmaterial);
-
-		std::shared_ptr <Texture> level1_floortexture = Resources::Find<Texture>(L"level1_floorTexture");
-		std::shared_ptr<Shader> level1_floorshader = Resources::Find<Shader>(L"RectShader");
-		std::shared_ptr<Material> level1_floormaterial = std::make_shared<Material>();
-		level1_floormaterial->SetShader(level1_floorshader);
-		level1_floormaterial->SetTexture(level1_floortexture);
-		Resources::Insert<Material>(L"level1_floorMaterial", level1_floormaterial);
-
-		std::shared_ptr <Texture> deco_basecamp_entrance_texture = Resources::Find<Texture>(L"deco_basecamp_entranceTexture");
-		std::shared_ptr<Shader> deco_basecamp_entrance_shader = Resources::Find<Shader>(L"RectShader");
-		std::shared_ptr<Material> deco_basecamp_entrance_material = std::make_shared<Material>();
-		deco_basecamp_entrance_material->SetShader(deco_basecamp_entrance_shader);
-		deco_basecamp_entrance_material->SetTexture(deco_basecamp_entrance_texture);
-		Resources::Insert<Material>(L"deco_basecamp_entranceMaterial", deco_basecamp_entrance_material);
-
-		std::shared_ptr <Texture> deco_basecamp_uroboros_texture = Resources::Find<Texture>(L"deco_basecamp_uroborosTexture");
-		std::shared_ptr<Shader> deco_basecamp_uroboros_shader = Resources::Find<Shader>(L"RectShader");
-		std::shared_ptr<Material> deco_basecamp_uroboros_material = std::make_shared<Material>();
-		deco_basecamp_uroboros_material->SetShader(deco_basecamp_uroboros_shader);
-		deco_basecamp_uroboros_material->SetTexture(deco_basecamp_uroboros_texture);
-		Resources::Insert<Material>(L"deco_basecamp_uroborosMaterial", deco_basecamp_uroboros_material);
-
-
-		// Grid
-		std::shared_ptr<Shader> gridShader = Resources::Find<Shader>(L"GridShader");
-		std::shared_ptr<Material> gridMaterial = std::make_shared<Material>();
-		gridMaterial->SetShader(gridShader);
-		Resources::Insert<Material>(L"GridMaterial", gridMaterial);
-
-		// Debug
-		std::shared_ptr<Shader> debugShader = Resources::Find<Shader>(L"DebugShaderDebugShader");
-		std::shared_ptr<Material> debugMaterial = std::make_shared<Material>();
-		debugMaterial->SetRenderingMode(eRenderingMode::Transparent);
-		debugMaterial->SetShader(debugShader);
-		Resources::Insert<Material>(L"DebugMaterial", debugMaterial);
-
-		// Player
-		/*std::shared_ptr<Texture> playerTexture = Resources::Find<Texture>(L"PlayerSprite");
-		std::shared_ptr<Shader> playerShader = Resources::Find<Shader>(L"PlayerShader");*/
-
 	}
-
 	void Initialize()
 	{
 		LoadMesh();

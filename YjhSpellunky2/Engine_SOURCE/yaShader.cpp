@@ -72,7 +72,7 @@ namespace ya
 				, mPSBlob->GetBufferSize()
 				, nullptr
 				, mPS.GetAddressOf());
-		} 
+		}
 	}
 
 	void Shader::Binds()

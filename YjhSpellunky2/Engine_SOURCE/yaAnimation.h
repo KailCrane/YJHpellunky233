@@ -17,6 +17,7 @@ namespace ya
 			Vector2 offset;		// 발 끝
 			Vector2 atlasSize;  // 쪼개진 스프라이트의 크기
 			float duration;		// 프레임 사이의 시간
+			bool reverse;
 
 			Sprite()
 				: leftTop(0.0f, 0.0f)
@@ -24,6 +25,7 @@ namespace ya
 				, offset(0.0f, 0.0f)
 				, atlasSize(0.0f)
 				, duration(0.1f)
+				, reverse(false)
 			{
 
 			}
@@ -38,7 +40,7 @@ namespace ya
 
 		void Create(const std::wstring& name, std::shared_ptr<Texture> atlas
 			, Vector2 leftTop, Vector2 size, Vector2 offset
-			, UINT spriteLegth, float duration);
+			, UINT spriteLegth, float duration , bool reverse);
 
 		void Reset();
 

@@ -9,7 +9,7 @@ namespace ya
 		Monster();
 		virtual ~Monster();
 
-		virtual void Initialize();
+		virtual void Initalize();
 		virtual void Update();
 		virtual void FixedUpdate();
 		virtual void Render();

@@ -10,7 +10,7 @@ namespace ya
 		CameraScript();
 		~CameraScript();
 
-		virtual void Initialize() override;
+		virtual void Initalize() override;
 		virtual void Update() override;
 		virtual void Render() override;
 

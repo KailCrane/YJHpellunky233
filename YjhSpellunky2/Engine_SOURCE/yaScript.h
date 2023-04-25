@@ -10,7 +10,7 @@ namespace ya
 		Script();
 		virtual ~Script();
 
-		virtual void Initialize();
+		virtual void Initalize();
 		virtual void Update();
 		virtual void FixedUpdate();
 		virtual void Render();
@@ -25,5 +25,7 @@ namespace ya
 
 	private:
 		//std::vector<Script*> mScripts;
+		//state jump;
+		//state Attack;
 	};
 }

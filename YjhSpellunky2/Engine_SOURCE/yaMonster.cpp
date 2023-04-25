@@ -11,20 +11,20 @@ namespace ya
 	{
 
 	}
-	void Monster::Initialize()
+	void Monster::Initalize()
 	{
-		GameObject::Initialize();
+
 	}
 	void Monster::Update()
 	{
-		GameObject::Update();
+
 	}
 	void Monster::FixedUpdate()
 	{
-		GameObject::FixedUpdate();
+
 	}
 	void Monster::Render()
 	{
-		GameObject::Render();
+
 	}
 }

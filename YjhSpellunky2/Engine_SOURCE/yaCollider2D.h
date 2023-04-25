@@ -10,7 +10,7 @@ namespace ya
 		Collider2D();
 		~Collider2D();
 
-		virtual void Initialize() override;
+		virtual void Initalize() override;
 		virtual void Update() override;
 		virtual void FixedUpdate() override;
 		virtual void Render() override;
@@ -31,14 +31,12 @@ namespace ya
 		UINT GetID() { return mID; }
 		Vector3 GetPosition() { return mPosition; }
 		Vector2 GetSize() { return mSize; }
-
-
-
 	private:
 		static UINT ColliderNumber;
 		UINT mID;
 		eColliderType mType;
 		Transform* mTransform;
+
 
 		Vector2 mSize;
 		Vector2 mCenter;

@@ -31,7 +31,7 @@ namespace ya
 	{
 	}
 
-	void Camera::Initialize()
+	void Camera::Initalize()
 	{	
 		RegisterCameraInRenderer();
 	}

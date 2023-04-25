@@ -1,7 +1,6 @@
 #pragma once
 #include "yaScene.h"
-#include "yaPlayer.h"
-#include "yaPlayerScript.h"
+
 namespace ya
 {
 	class PlayScene : public Scene
@@ -17,13 +16,7 @@ namespace ya
 
 		virtual void OnEnter() override;
 		virtual void OnExit() override;
-	
 
 	private:
-		GameObject* cameraObj;
-		Player* my_player;
-		PlayerScript* pScript;
-		WhipScript* whip;
-		bool isSceneActive;
 	};
 }

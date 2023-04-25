@@ -10,7 +10,7 @@ namespace ya
 	{
 
 	}
-	void Player::Initialize()
+	void Player::Initalize()
 	{
 		GameObject::Initialize();
 	}

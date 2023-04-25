@@ -44,6 +44,11 @@ namespace ya::renderer
 		Vector2 resolution;
 	};
 
+	//CBUFFER(FadeCB, CBSLOT_FADE)
+	//{
+	//	float alpha;
+	//};
+
 	CBUFFER(AnimationCB, CBSLOT_ANIMATION)
 	{
 		Vector2 leftTop;

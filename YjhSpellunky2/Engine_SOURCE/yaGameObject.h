@@ -58,24 +58,7 @@ namespace ya
 
 			return nullptr;
 		}
-		template <typename T>
-		T* GetScript()
-		{
-			T* script;
-			for (auto c : mScripts)
-			{
-				script = dynamic_cast<T*>(c);
-
-				if (script != nullptr)
-					return script;
-			}
-
-			return nullptr;
-		}
-
 		const std::vector<Script*>& GetScripts() { return mScripts; }
-
-	
 
 		bool IsDead()
 		{
@@ -84,11 +67,10 @@ namespace ya
 			
 			return false;
 		}
-
-
 		void Pause() { mState = eState::Paused; }
 		void Death() { mState = eState::Dead; }
 		void Alive() { mState = eState::Active; }
+
 		eState GetState() { return mState; }
 		
 		bool IsDontDestroy() { return mbDontDestroy; }

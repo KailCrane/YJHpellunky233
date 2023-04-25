@@ -13,7 +13,7 @@ namespace ya
 	{
 	}
 
-	void SpriteRenderer::Initialize()
+	void SpriteRenderer::Initalize()
 	{
 	}
 
@@ -27,10 +27,6 @@ namespace ya
 
 	void SpriteRenderer::Render()
 	{
-		if (this->GetOwner()->IsDead())
-		{
-			return; //
-		}
 		this->GetOwner()->GetComponent<Transform>()->SetConstantBuffer();
 
 		GetMaterial()->Bind();

@@ -17,6 +17,8 @@
 #include "yaCollisionManager.h"
 #include "yaAnimator.h"
 #include "yaAnimation.h"
+#include "yaFadeEffect.h"
+#include "yaCharPreview.h"
 
 
 
@@ -73,7 +75,7 @@ namespace ya
 
 		//MainBG
 		{
-			GameObject* bgObj = object::Instantiate<GameObject>(eLayerType::UI, this);
+			bgObj = object::Instantiate<GameObject>(eLayerType::UI, this);
 			bgObj->SetName(L"MenuTitle");
 			Transform* bg_tr = bgObj->GetComponent<Transform>();
 			bg_tr->SetPosition(Vector3(1.0f, 1.0f, 7.0f));
@@ -84,13 +86,12 @@ namespace ya
 			mr->SetMaterial(mateiral);
 			std::shared_ptr<Mesh> mesh = Resources::Find<Mesh>(L"RectMesh");
 			mr->SetMesh(mesh);
-			intro_bg_objs.push_back(bgObj);
 		}
 #pragma endregion
 
 #pragma region MenuBggal
 		{
-			GameObject* bggalObj = object::Instantiate<GameObject>(eLayerType::UI, this);
+			bggalObj = object::Instantiate<GameObject>(eLayerType::UI, this);
 			bggalObj->SetName(L"MenuBgGal");
 			Transform* tr = bggalObj->GetComponent<Transform>();
 			tr->SetPosition(Vector3(-2.5f, 0.8f, 6.0f));
@@ -101,7 +102,6 @@ namespace ya
 			mr->SetMaterial(bggal_material);
 			std::shared_ptr<Mesh> mesh = Resources::Find<Mesh>(L"RectMesh");
 			mr->SetMesh(mesh);
-			intro_bg_objs.push_back(bggalObj);
 		}
 
 #pragma endregion
@@ -114,6 +114,8 @@ namespace ya
 		}
 
 #pragma region  "MenuImage"
+
+
 
 		{
 			GameObject* main_dirtObj = object::Instantiate<GameObject>(eLayerType::UI, this);
@@ -150,7 +152,7 @@ namespace ya
 
 		menuSelect = object::Instantiate<TitleMenuSelect>(eLayerType::None, this);
 
-		menuSelect->SetMaxSize(4);
+		menuSelect->SetMaxSize(5);
 
 		{
 			select_bar_L = object::Instantiate<GameObject>(eLayerType::UI, this);
@@ -169,7 +171,7 @@ namespace ya
 			menu_select_bars.push_back(select_bar_L);
 			//selectBarLObj->Death();
 		}
-
+		
 		{
 			select_bar_R = object::Instantiate<GameObject>(eLayerType::UI, this);
 			select_bar_R->SetName(L"selectBarR");
@@ -192,7 +194,7 @@ namespace ya
 			GameObject* optionBar_Obj = object::Instantiate<GameObject>(eLayerType::UI, this);
 			optionBar_Obj->SetName(L"optionBar_Bar");
 			Transform* tr = optionBar_Obj->GetComponent<Transform>();
-			tr->SetPosition(Vector3(1.0f, 1.0f, 1.0f));
+			tr->SetPosition(Vector3(1.0f, 1.0f, 1.0f)); 
 			tr->SetScale(Vector3(1.5f, 0.5f, 1.0f));
 
 			SpriteRenderer* mr = optionBar_Obj->AddComponent<SpriteRenderer>();
@@ -273,7 +275,7 @@ namespace ya
 			snake_objs.push_back(snake_Body_obj);
 			uiStatue->SetBodyObject(snake_Body_obj);
 		}
-
+	
 		{
 			GameObject* disk_L_obj = object::Instantiate<GameObject>(eLayerType::UI, this);
 			disk_L_obj->SetName(L"Split_Disk_L");
@@ -459,7 +461,7 @@ namespace ya
 			mr->SetMesh(mesh);
 			char_select_objs.push_back(door_obj);
 			charSelect->SetStoneDoor(door_obj);
-
+			
 			//menu_select_objs.push_back(charDoorObj);
 		}
 
@@ -552,8 +554,8 @@ namespace ya
 			//menu_select_objs.push_back(charDoor_blockedObj);
 		}
 
-
-
+		
+	
 #pragma region Rope
 
 		{
@@ -569,7 +571,7 @@ namespace ya
 			std::shared_ptr<Mesh> mesh = Resources::Find<Mesh>(L"RectMesh");
 			mr->SetMesh(mesh);
 
-			char_select_objs.push_back(ropeMiddleObj);
+			char_select_objs.push_back(ropeMiddleObj);	
 		}
 
 
@@ -742,7 +744,7 @@ namespace ya
 
 		}
 
-
+			
 
 		{
 			scrollMiddle = object::Instantiate<GameObject>(eLayerType::UI, this);
@@ -819,7 +821,7 @@ namespace ya
 			right_arrow->Death();
 			//char_select_objs.push_back(right_arrow);
 		}
-
+		
 		{
 			left_arrow = object::Instantiate<Arrow>(eLayerType::UI, this);
 			left_arrow->SetName(L"LeftArrow");
@@ -842,36 +844,37 @@ namespace ya
 			left_arrow->Death();
 			char_select_objs.push_back(right_arrow);
 		}
-
+		
 		{
-			GameObject* player_sheet1 = object::Instantiate<GameObject>(eLayerType::Player, this);
-			player_sheet1->SetName(L"sheet1");
-			Transform* tr = player_sheet1->GetComponent<Transform>();
+			//Player* obj = object::Instantiate<Player>(eLayerType::Player, this);
+			//obj->SetName(L"Player");
+			//Transform* player_tr = obj->GetComponent<Transform>();
 
-			tr->SetPosition(Vector3(1.0f, 1.0f, 5.0f));
-			//tr->SetRotation(Vector3(0.0f, 0.0f, XM_PIDIV2));
-			tr->SetScale(Vector3(0.001f, 0.01f, 1.0f));
-			Collider2D* collider = player_sheet1->AddComponent<Collider2D>();
-			collider->SetType(eColliderType::Rect);
-			collider->SetSize(Vector2(0.1f, 0.1f));
-			
-			Animator* animator = player_sheet1->AddComponent<Animator>();
-			std::shared_ptr<Texture> texture = Resources::Load<Texture>(L"Player", L"char_yellow.png");
+			//player_tr->SetPosition(Vector3(1.0f, 1.0f, 1.0f));
+			////tr->SetRotation(Vector3(0.0f, 0.0f, XM_PIDIV2));
+			//player_tr->SetScale(Vector3(0.001f, 0.01f, 1.0f));
+			//Collider2D* collider = obj->AddComponent<Collider2D>();
+			//collider->SetType(eColliderType::Circle);
+			//collider->SetSize(Vector2(0.1f, 0.1f));
 
-			animator->Create(L"Idle", texture, Vector2(0.0f, 0.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false);
-			animator->Create(L"Move", texture, Vector2(128.0f, 0.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 8, 0.05f, false);
-			animator->Create(L"Attack", texture, Vector2(0.0f, 512.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 6, 0.05f, false);
-			//animator->Create(L"MoveDown", texture, Vector2(0.0f, 520.0f), Vector2(120.0f, 130.0f), Vector2::Zero, 8, 0.1f);
-			//좌측상단좌표,좌측상단으로부터 잘라낼 범위, 발끝, 잘라낸 크기 , 프레임당 지속
+			//Animator* animator = obj->AddComponent<Animator>();
+			//std::shared_ptr<Texture> texture = Resources::Load<Texture>(L"Player", L"char_yellow.png");
+
+			//animator->Create(L"Idle", texture, Vector2(0.0f, 0.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f);
+			//animator->Create(L"Move", texture, Vector2(128.0f, 0.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 8, 0.05f);
+			//animator->Create(L"Attack", texture, Vector2(0.0f, 512.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 6, 0.05f);
+			////animator->Create(L"MoveDown", texture, Vector2(0.0f, 520.0f), Vector2(120.0f, 130.0f), Vector2::Zero, 8, 0.1f);
+			////좌측상단좌표,좌측상단으로부터 잘라낼 범위, 발끝, 잘라낸 크기 , 프레임당 지속
 
 
-			animator->Play(L"Idle", true);
+			//animator->Play(L"Idle", true);
 
-			SpriteRenderer* mr = player_sheet1->AddComponent<SpriteRenderer>();
-			std::shared_ptr<Material> mateiral = Resources::Find<Material>(L"PlayerMaterial");
-			mr->SetMaterial(mateiral);
-			std::shared_ptr<Mesh> mesh = Resources::Find<Mesh>(L"RectMesh");
-			mr->SetMesh(mesh);
+			//SpriteRenderer* mr = obj->AddComponent<SpriteRenderer>();
+			//std::shared_ptr<Material> mateiral = Resources::Find<Material>(L"PlayerMaterial");
+			//mr->SetMaterial(mateiral);
+			//std::shared_ptr<Mesh> mesh = Resources::Find<Mesh>(L"RectMesh");
+			//mr->SetMesh(mesh);
+			//obj->AddComponent<PlayerScript>();
 		}
 
 
@@ -922,13 +925,13 @@ namespace ya
 
 		//	//menu_select_objs.push_back(charDoor_blockedObj);
 		//}
-
+	
 
 		ObjsOff(menu_select_objs);
 		ObjsOff(menu_select_bars);
 		ObjsOff(snake_objs);
 		ObjsOff(char_select_objs);
-
+		
 
 
 #pragma region CharacterSheet
@@ -971,14 +974,14 @@ namespace ya
 
 		if (Input::GetKeyDown(eKeyCode::ENTER) || Input::GetKeyDown(eKeyCode::Z))
 		{
-
 			if (titleIntroPhase == Standby)
 			{
-				ObjsOff(intro_bg_objs);
+				bgObj->Death();
+				bggalObj->Death();
+
 				ObjsOn(menu_select_objs);
 				ObjsOn(snake_objs);
 				uiDisk->SetActive();
-
 				titleIntroPhase = DiskActive;
 			}
 			//페이드 아웃해주고 메인 메뉴 선택을 해주는 UI로
@@ -999,7 +1002,7 @@ namespace ya
 					{
 					case 0:
 						titleIntroPhase = CharSelectMode;
-
+						
 						charSelect->Action();
 						ObjsOn(char_select_objs);
 						ObjsOff(menu_select_bars);
@@ -1028,7 +1031,7 @@ namespace ya
 		}
 
 #pragma endregion
-
+	
 		switch (titleIntroPhase)
 		{
 		case ya::TitleScene::Standby:

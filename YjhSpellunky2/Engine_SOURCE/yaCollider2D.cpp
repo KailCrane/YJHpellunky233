@@ -16,12 +16,12 @@ namespace ya
 	Collider2D::Collider2D()
 		:Component(eComponentType::Collider)
 		, mType(eColliderType::None)
-		,mTransform(nullptr)
-		,mSize(Vector2::One)
-		,mCenter(Vector2::Zero)
+		, mTransform(nullptr)
+		, mSize(Vector2::One)
+		, mCenter(Vector2::Zero)
 		, mbTrigger(false)
 		, mID(0)
-		,mRadius(0.0f)
+		, mRadius(0.0f)
 	{
 		mID = ColliderNumber++;
 	}
@@ -29,7 +29,7 @@ namespace ya
 	{
 
 	}
-	void Collider2D::Initialize()
+	void Collider2D::Initalize()
 	{
 		mTransform = GetOwner()->GetComponent<Transform>();
 	}
@@ -66,7 +66,7 @@ namespace ya
 		meshAttribute.scale = scale;
 		meshAttribute.type = mType;
 
-		renderer::debugMeshes.push_back(meshAttribute);
+		//renderer::debugMeshes.push_back(meshAttribute);
 	}
 	void Collider2D::Render()
 	{

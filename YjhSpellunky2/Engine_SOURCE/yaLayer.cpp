@@ -42,7 +42,7 @@ namespace ya
 			if (obj == nullptr)
 				continue;
 
-			obj->Initalize();
+			obj->Initialize();
 		}
 	}
 

@@ -20,7 +20,7 @@ namespace ya
 
 	void Arrow::Initalize()
 	{
-		GameObject::Initalize();
+		GameObject::Initialize();
 	}
 
 	void Arrow::Update()

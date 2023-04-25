@@ -36,14 +36,28 @@ namespace ya
 		Animator();
 		~Animator();
 
-		virtual void Initalize() override;
+		virtual void Initialize() override;
 		virtual void Update() override;
 		virtual void FixedUpdate() override;
 		virtual void Render() override;
 
 		bool Create(const std::wstring& name, std::shared_ptr<Texture> atlas
 			, Vector2 leftTop, Vector2 size, Vector2 offset
-			, UINT spriteLegth, float duration);
+			, UINT spriteLegth, float duration ,bool reverse);
+
+		bool IsComplete()
+		{
+			if (mActiveAnimation == nullptr)
+			{
+				true;
+			}
+			else
+			{
+				return mActiveAnimation->IsComplete();
+			}
+
+		}
+
 
 		Animation* FindAnimation(const std::wstring& name);
 		Events* FindEvents(const std::wstring& name);

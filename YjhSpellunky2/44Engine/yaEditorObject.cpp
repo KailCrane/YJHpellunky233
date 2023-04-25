@@ -13,7 +13,7 @@ namespace ya
 	}
 	void EditorObject::Initalize()
 	{
-		GameObject::Initalize();
+		GameObject::Initialize();
 	}
 	void EditorObject::Update()
 	{

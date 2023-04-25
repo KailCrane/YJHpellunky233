@@ -13,7 +13,7 @@ namespace ya
 	{
 	}
 
-	void MeshRenderer::Initalize()
+	void MeshRenderer::Initialize()
 	{
 	}
 

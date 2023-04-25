@@ -59,11 +59,16 @@ namespace ya
 
 		for (GameObject* left :lefts)
 		{
+			if (left->GetLayerType() == eLayerType::Ground)
+			{
+
+				int a;
+			}
 			if (left->GetState() != GameObject::Active)
 				continue;
 			if (left->GetComponent<Collider2D>() == nullptr)
 				continue;
-
+			
 
 			for (GameObject* right : rights)
 			{
@@ -80,6 +85,8 @@ namespace ya
 	}
 	void CollisionManager::ColliderCollision(Collider2D* left, Collider2D* right)
 	{
+		
+
 		// 두 충돌체 레이어로 구성된 id 확인
 		ColliderID colliderID;
 		colliderID.left = (UINT)left->GetID();
@@ -154,74 +161,104 @@ namespace ya
 		// 0 --- 1
 		// |     |
 		// 3 --- 2
-		//static const Vector3 arrLocalPos[4] =
-		//{
-		//	Vector3{-0.5f,0.5f,0.0f}
-		//	,Vector3{0.5f,0.5f,0.0f}
-		//	,Vector3{0.5f,-0.5f,0.0f}
-		//	,Vector3{-0.5f,-0.5f,0.0f}
-		//};
-
-		//Transform* leftTr = left->GetOwner()->GetComponent<Transform>();
-		//Transform* rightTr = right->GetOwner()->GetComponent<Transform>();
-
-		//Matrix leftMat = leftTr->GetWorldMatrix();
-		//Matrix rightMat = rightTr->GetWorldMatrix();
-
-		//// 분리축 백터 (투영 백터)
-		//Vector3 Axis[4] = {};
-		//Axis[0] = Vector3::Transform(arrLocalPos[1], leftMat);
-		//Axis[1] = Vector3::Transform(arrLocalPos[3], leftMat);
-		//Axis[2] = Vector3::Transform(arrLocalPos[1], rightMat);
-		//Axis[3] = Vector3::Transform(arrLocalPos[3], rightMat);
-
-		//Axis[0] -= Vector3::Transform(arrLocalPos[0], leftMat);
-		//Axis[1] -= Vector3::Transform(arrLocalPos[0], leftMat);
-		//Axis[2] -= Vector3::Transform(arrLocalPos[0], rightMat);
-		//Axis[3] -= Vector3::Transform(arrLocalPos[0], rightMat);
-
-		//for (size_t i = 0; i < 4; i++)
-		//{
-		//	Axis[i].z = 0.0f;
-		//}
-		//
-		//Vector3 vc = left->GetPosition() - right->GetPosition();
-		//vc.z = 0.0f;
-
-		//Vector3 centerDir = vc;
-
-		//for (size_t i = 0; i < 4; i++)
-		//{
-		//	Vector3 vA = Axis[i];
-		//	vA.Normalize();
-
-		//	float projDist = 0.0f;
-		//	for (size_t j = 0; j < 4; j++)
-		//	{
-		//		projDist += fabsf(Axis[j].Dot(vA) / 2.0f);
-		//	}
-		//	if (projDist < fabsf(centerDir.Dot(vA)))
-		//	{
-		//		return false;
-		//	}
-		//}
-
-		//원충돌
-		Vector3 leftPos = left->GetPosition();
-		Vector2 leftSize = left->GetSize();
-
-		Vector3 rightPos = right->GetPosition();
-		Vector2 rightSize = right->GetSize();
-
-		Vector2 posVlaue = Vector2(fabsf(leftPos.x - rightPos.x), fabsf(leftPos.y - rightPos.y));
-		float distance = posVlaue.LengthSquared();
-		float raidusSum = fabsf(leftSize.x / 2 + rightSize.x / 2);
-
-		if (raidusSum <= distance)
+		// Rect vs Rect 
+		// 0 --- 1
+		// |     |
+		// 3 --- 2
+		Vector3 arrLocalPos[4] =
 		{
-			return false;
+			Vector3{-0.5f, 0.5f, 0.0f}
+			,Vector3{0.5f, 0.5f, 0.0f}
+			,Vector3{0.5f, -0.5f, 0.0f}
+			,Vector3{-0.5f, -0.5f, 0.0f}
+		};
+
+		Transform* leftTr = left->GetOwner()->GetComponent<Transform>();
+		Transform* rightTr = right->GetOwner()->GetComponent<Transform>();
+		//센터를 바꾸었을 때 어떻게 해야 했을지
+
+
+		Matrix leftMat = leftTr->GetWorldMatrix();
+		Matrix rightMat = rightTr->GetWorldMatrix();
+			
+		// 분리축 벡터 4개 구하기
+		Vector3 Axis[4] = {};
+		Vector3 leftScale = Vector3(left->GetSize().x, left->GetSize().y, 1.0f);
+
+		Matrix finalLeft = Matrix::CreateScale(leftScale);
+		finalLeft *= leftMat;
+
+		Vector3 rightScale = Vector3(right->GetSize().x, right->GetSize().y, 1.0f);
+		Matrix finalRight = Matrix::CreateScale(rightScale);
+		finalRight *= rightMat;
+
+		Axis[0] = Vector3::Transform(arrLocalPos[1], finalLeft);
+		Axis[1] = Vector3::Transform(arrLocalPos[3], finalLeft);
+		Axis[2] = Vector3::Transform(arrLocalPos[1], finalRight);
+		Axis[3] = Vector3::Transform(arrLocalPos[3], finalRight);
+
+		Axis[0] -= Vector3::Transform(arrLocalPos[0], finalLeft);
+		Axis[1] -= Vector3::Transform(arrLocalPos[0], finalLeft);
+		Axis[2] -= Vector3::Transform(arrLocalPos[0], finalRight);
+		Axis[3] -= Vector3::Transform(arrLocalPos[0], finalRight);
+
+
+
+		for (size_t i = 0; i < 4; i++)
+			Axis[i].z = 0.0f;
+
+		Vector3 vc = Vector3((leftTr->GetPosition().x- rightTr->GetPosition().x) ,(leftTr->GetPosition().y - rightTr->GetPosition().y),(leftTr->GetPosition().z - rightTr->GetPosition().z)  ) ;
+		vc.z = 0.0f;
+
+		Vector3 centerDir = vc;
+		for (size_t i = 0; i < 4; i++)
+		{
+			Vector3 vA = Axis[i];
+			/*vA.Normalize();*/
+
+			float projDist = 0.0f;
+			for (size_t j = 0; j < 4; j++)
+			{
+				projDist += fabsf(Axis[j].Dot(vA) / 2.0f);
+			}
+
+			if (projDist < fabsf(centerDir.Dot(vA)))
+			{
+				float _x = fabsf(centerDir.Dot(vA));
+				return false;
+			}
 		}
-		
+
+		// 숙제 Circle vs Cirlce
+		/*if (left->GetType() == eColliderType::Circle && right->GetType() == eColliderType::Circle)
+		{
+			Vector2 LeftSize = left->GetSize();
+			Vector2 RightSize = right->GetSize();
+
+			float LeftRadius = (LeftSize.x / 2.0f);
+			float RightRadius = (RightSize.x / 2.0f);
+
+			float TotalRadius = LeftRadius + RightRadius;
+
+			Vector3 vc = left->GetPosition() - right->GetPosition();
+			vc.z = 0.0f;
+
+			Vector3 CenterDir = vc;
+
+			if (CenterDir.x >= TotalRadius
+				|| CenterDir.y >= TotalRadius)
+			{
+				return false;
+			}
+			else if (CenterDir.x < TotalRadius
+				|| CenterDir.y < TotalRadius)
+			{
+				return true;
+			}
+			else
+				return false;*/
 		return true;
+
+		
 	}
 }

@@ -15,7 +15,7 @@ namespace ya
 	{
 	}
 
-	void CameraScript::Initalize()
+	void CameraScript::Initialize()
 	{
 	}
 
